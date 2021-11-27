@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import {Route, Routes, BrowserRouter as Router} from 'react-router-dom';
 
 import "../css/navbar.css"
-import StockOrder from '../Pages/StockOrder'
+import StockOrderHistory from '../Pages/StockOrderHistory'
+import SpecificStockHistory from '../Pages/SpecificStockHistory'
+import OtherAssetHistory from '../Pages/OtherAssetHistory'
+import Home from '../Pages/Home'
 import SignIn from '../SigninPage';
 
 const NavBar = () => {
@@ -23,7 +26,13 @@ const NavBar = () => {
             
             <Router> 
                 <Routes>
-                    <Route path="/StockOrderHistory" element = {<StockOrder />} />
+                    <Route path="/UserPage" element = {<Home />} />
+
+                    <Route path="/StockOrderHistory" element = {<StockOrderHistory />} />
+
+                    <Route path="/SpecificStockHistory" element = {<SpecificStockHistory />} />
+
+                    <Route path="/OtherAssetHistory" element = {<OtherAssetHistory />} />
             
                     <Route path="/SignInPage" element = {<SignIn />} />
             
