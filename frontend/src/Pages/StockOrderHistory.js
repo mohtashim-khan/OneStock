@@ -1,17 +1,15 @@
 import React from 'react'
-import NavBar from '../components/Navbar';
 
 
-function StockOrder(){
+
+function StockOrderHistory(){
     return(
         <>
-            
             <div>
-                
                 <h2>Stock Order History</h2>
             </div>
         </>
     );
 }
 
-export default StockOrder;
+export default StockOrderHistory;
