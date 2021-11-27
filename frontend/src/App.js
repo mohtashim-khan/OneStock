@@ -12,8 +12,8 @@ function App() {
     <div className="App">
       <NavBar />
       <div className = "content">
-        <h1>{title}</h1>
-        <SignIn/>
+        
+        
 
       
       </div>
