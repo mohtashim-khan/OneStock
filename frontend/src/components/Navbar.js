@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
+import {Route, Routes, BrowserRouter as Router} from 'react-router-dom';
 
 import "../css/navbar.css"
+import StockOrder from '../Pages/StockOrder'
+import SignIn from '../SigninPage';
 
 const NavBar = () => {
     
     return (
+       
 
         <nav className="navbar">
 
