@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import './css/App.css';
+import NavBar from './components/Navbar';
+import SignIn from './SigninPage';
+import React, {Component} from 'react';
 
 function App() {
+  const title = "OneStock";
+  const likes = 50;
+  const link = "www.google.com";
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NavBar />
+      <div className = "content">
+        <h1>{title}</h1>
+        <SignIn/>
+
+      
+      </div>
+      
     </div>
   );
 }
