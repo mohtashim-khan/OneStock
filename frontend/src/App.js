@@ -1,8 +1,10 @@
 import './css/App.css';
-import NavBar from './components/Navbar';
 import SignIn from './pages/SigninPage';
 import SignUp from './pages/SignUpPage';
+import AddBrokerage from './pages/AddBrokerage';
 import React, {Component} from 'react';
+import CreateOrder from './pages/CreateOrder';
+import ModifyOrder from './pages/ModifyOrder';
 
 function App() {
   
@@ -11,7 +13,7 @@ function App() {
     <div className="App">
       <div className = "content">
         
-        <SignUp/>
+        <ModifyOrder/>
 
       
       </div>

@@ -4,10 +4,10 @@ import "../css/SignUp.css"
 
 const SignUp = () => {
 
-    const [username, setUsername] = useState('username');
-    const [password, setPassword] = useState('password');
-    const [email, setEmail] = useState('email');
-    const [isSuperUser, setisSuperUser] = useState('Yes');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [isSuperUser, setisSuperUser] = useState('');
 
 
 
