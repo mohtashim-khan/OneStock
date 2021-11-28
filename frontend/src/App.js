@@ -1,12 +1,10 @@
 import './css/App.css';
 import NavBar from './components/Navbar';
-import SignIn from './SigninPage';
-import React, {Component} from 'react';
+import React from 'react';
 
 function App() {
   const title = "OneStock";
-  const likes = 50;
-  const link = "www.google.com";
+  
 
   return (
     <div className="App">
