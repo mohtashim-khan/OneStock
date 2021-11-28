@@ -1,0 +1,56 @@
+
+
+.StockOrderHistory
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.buttonsContainer
+{
+    align-items: center;
+    justify-content: center;
+    width:50%;
+    
+}
+
+td,
+th {
+    border: 1px solid rgb(168, 168, 168);
+    padding: 10px;
+}
+
+td {
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #eee;
+}
+
+th[scope="col"] {
+    background-color: #000000;
+    color: rgb(243, 243, 243);
+}
+
+th[scope="row"] {
+    background-color: #d7d9f2;
+}
+
+caption {
+    padding: 10px;
+    caption-side: btop;
+}
+
+table[val = "5"] {
+    position: relative;
+    border-collapse: collapse;
+    border: 2px solid rgb(2, 1, 1);
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    font-size: .8rem;
+    
+}
+

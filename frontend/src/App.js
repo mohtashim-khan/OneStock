@@ -14,6 +14,7 @@ import CreateRealEstateOrder from './pages/CreateRealEstateOrder';
 import ModifyRealEstateOrder from './pages/ModifyRealEstateOrder';
 import ModifyBondOrder from './pages/ModifyBondOrder';
 import CreateBondOrder from './pages/CreateBondOrder';
+import StockOrderHistory from './pages/StockOrderHistory';
 
 function App() {
   
@@ -22,7 +23,7 @@ function App() {
     <div className="App">
       <div className = "content">
         
-        <CreateBondOrder/>
+        <StockOrderHistory/>
 
       
       </div>
