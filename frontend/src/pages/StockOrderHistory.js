@@ -20,7 +20,7 @@ const StockOrderHistory = () => {
 
 
 
-                <table val="5">
+                <table val="11">
                     <caption>Order History</caption>
 
                     <tr>

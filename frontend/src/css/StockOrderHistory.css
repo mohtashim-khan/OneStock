@@ -44,7 +44,7 @@ caption {
     caption-side: btop;
 }
 
-table[val = "5"] {
+table[val = "11"] {
     position: relative;
     border-collapse: collapse;
     border: 2px solid rgb(2, 1, 1);

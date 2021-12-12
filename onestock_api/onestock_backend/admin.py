@@ -3,6 +3,10 @@ from django.apps import apps
 from django.contrib.admin.sites import AlreadyRegistered
 
 # Register your models here.
+from django.apps import apps
+from django.contrib.admin.sites import AlreadyRegistered
+
+# Register your models here.
 
 models = apps.get_models()
 for model in models:
