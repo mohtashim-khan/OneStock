@@ -1,12 +1,13 @@
 import React from 'react'
 
 import "../css/SearchBar.css"
-
+import NavBar from '../components/Navbar';
 function SpecificStockHistory(){
     return(
         <>
 
         <div>
+            <NavBar />
             <h2>Specific Stock Information</h2>
             <p2> Specific Stock Performance: </p2>
             <net_back>%3.9</net_back>
