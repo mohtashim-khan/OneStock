@@ -24,29 +24,6 @@ const NavBar = () => {
                 </div>
             </nav>
             
-            <Router> 
-                <Routes>
-                    <Route path="/UserPage" element = {<Home />} />
-
-            <h1>OneStock</h1>
-            <div className="links">
-             <a href="/Home">Home</a>
-             <a href="/SpecificStockHistory">Specific Stock History</a>
-             <a href="/StockOrderHistory">Stock Order History</a>
-             <a href="/OtherAssetHistory">Other Asset History</a>
-             <a href="/SignInPage">Log Out</a>   
-            </div>
-        </nav>
-
-                    <Route path="/SpecificStockHistory" element = {<SpecificStockHistory />} />
-
-                    <Route path="/OtherAssetHistory" element = {<OtherAssetHistory />} />
-            
-                    <Route path="/SignInPage" element = {<SignIn />} />
-            
-                </Routes>
-        
-            </Router>
         
         </>
 
