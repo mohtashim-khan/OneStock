@@ -14,7 +14,7 @@ const SignIn = () => {
             password
         }
 
-        fetch('http://localhost:3000/signin',
+        fetch('http://localhost:3000/SignIn',
             {
                 method: 'POST',
                 headers: {

@@ -11,9 +11,6 @@ class User(models.Model):
     def __str__(self) -> str:
         return self.username
     
-
-
-
 class Account(models.Model):
     accountValue = models.IntegerField()
     accountType = models.CharField(max_length=100)
@@ -49,8 +46,6 @@ class Order(models.Model):
     
     def __str__(self) -> str:
         return self.id
-
-
 
 class TotalStockHistory(models.Model):
     uniqueTickers = models.BigIntegerField()
@@ -95,8 +90,6 @@ class RealEstate(models.Model):
 
     def __str__(self) -> str:
         return self.user+": "+self.type
-
-    
 
 class Commodities(models.Model):
     valuation = models.BigIntegerField()
