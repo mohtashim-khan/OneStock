@@ -3,6 +3,8 @@ from . import views
 
 urlpatterns = [
 
-    path('', views.apiOverview, name = "api-overview")
+    path('', views.apiOverview, name = "api-overview"),
+    path('getSpecificStockHistory/', views.getSpecificStockOrderHistory, name = "specificStockHistory"),
+
     
 ]

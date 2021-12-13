@@ -4,6 +4,8 @@ from django.http import JsonResponse
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .serializers import *
+from .models import *
 
 
 
@@ -28,7 +30,16 @@ def apiOverview(request):
         'ModifyRealEstateOrder':'/ModifyRealEstateOrder',
         'Sign-in' : '/SignIn',
         'Sign-Up':'/SignUp',
+        'GetStockOrderHistory' :'/GetStockOrderHistory',
+        'DeleteOrderbyID':'/DeleteOrderbyID',
+        'DeletebyOrderReqID':'/DeletebyOrderReqID',
+        'CreateOrdersFromImport':'/CreateOrdersFromImport',
     }
-    
-    
     return Response(api_urls)
+
+@api_view(['GET'])
+def getSpecificStockOrderHistory(request):
+
+    history = Specific_Stock_History.objects.all()
+    serializer = Specific_Stock_HistorySerializer(history, many = True, context={'request': request})
+    return Response(serializer.data)

@@ -9,7 +9,7 @@ class User(models.Model):
     isSuperUser = models.CharField(max_length=1)
 
     def __str__(self) -> str:
-        return self.username
+        return str(self.username)
     
 class Account(models.Model):
     accountValue = models.IntegerField()
@@ -17,7 +17,7 @@ class Account(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     
     def __str__(self) -> str:
-        return self.user + self.accountType
+        return str(self.user) + self.accountType
 
 class Brokerage(models.Model):
     name = models.CharField(max_length=100)
@@ -55,7 +55,7 @@ class TotalStockHistory(models.Model):
     user = models.ForeignKey(User, on_delete=CASCADE)
 
     def __str__(self) -> str:
-        return self.user+": "+self.id
+        return str(self.user)+": "+self.id
 
 class Specific_Stock_History(models.Model):
     ticker = models.CharField(max_length=100, unique = True)
@@ -68,7 +68,7 @@ class Specific_Stock_History(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
 
     def __str__(self) -> str:
-        return self.user+": "+self.ticker
+        return str(self.user)+": "+self.ticker
 
 class Dividend (models.Model):
     ticker = models.ForeignKey(Specific_Stock_History, on_delete=CASCADE)
@@ -89,7 +89,7 @@ class RealEstate(models.Model):
     user = models.ForeignKey(User,on_delete=CASCADE)
 
     def __str__(self) -> str:
-        return self.user+": "+self.type
+        return str(self.user)+": "+self.type
 
 class Commodities(models.Model):
     valuation = models.BigIntegerField()
@@ -97,7 +97,7 @@ class Commodities(models.Model):
     user = models.ForeignKey(User,on_delete=CASCADE)
 
     def __str__(self) -> str:
-        return self.user+": "+self.type
+        return str(self.user)+": "+self.type
 
 class CryptoCurrency(models.Model):
     valuation = models.BigIntegerField()
@@ -108,7 +108,7 @@ class CryptoCurrency(models.Model):
     user = models.ForeignKey(User,on_delete=CASCADE)
 
     def __str__(self) -> str:
-        return self.user+": "+self.name
+        return str(self.user)+": "+self.name
 
 class Bonds(models.Model):
     valuation = models.BigIntegerField()
@@ -118,7 +118,7 @@ class Bonds(models.Model):
     user = models.ForeignKey(User,on_delete=CASCADE)
 
     def __str__(self) -> str:
-        return self.user+": "+self.valuation
+        return str(self.user)+": "+self.valuation
 
 class Cash(models.Model):
     valuation = models.BigIntegerField()
@@ -127,7 +127,7 @@ class Cash(models.Model):
     user = models.ForeignKey(User,on_delete=CASCADE)
 
     def __str__(self) -> str:
-        return self.user+": "+self.valuation
+        return str(self.user)+": "+self.valuation
 
 
 

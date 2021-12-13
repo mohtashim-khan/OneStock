@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "../css/SignIn.css"
 
 const SignIn = () => {
@@ -7,6 +7,8 @@ const SignIn = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    
+    
     const handleSubmit = (e) => {
         e.preventDefault()
         const userInfo = {
@@ -25,6 +27,8 @@ const SignIn = () => {
                 console.log('User info Sent!');
             })
     }
+
+
 
     return (
 
@@ -46,6 +50,7 @@ const SignIn = () => {
                         onChange={(e) => setPassword(e.target.value)} />
                     <button>Sign-In</button>
                 </form>
+
 
                 <button onClick={(e) => {
                     e.preventDefault();
