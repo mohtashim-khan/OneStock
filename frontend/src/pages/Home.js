@@ -1,12 +1,13 @@
 import React from 'react'
 import '../css/Home.css';
 
-
+import NavBar from '../components/Navbar';
 function Home(){
     return(
         <>
 
             <div>
+                <NavBar />
                 <h2>Welcome Home</h2>
                 <p2> Overall Portfolio Performance: </p2>
                 <net_back>%10.9</net_back>

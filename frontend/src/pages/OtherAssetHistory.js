@@ -1,11 +1,12 @@
 import React from 'react'
 
-
+import NavBar from '../components/Navbar';
 
 function OtherAssetHistory(){
     return(
         <>
             <div>
+            <NavBar/>
                 <h2>Other Asset Order History</h2>
                 <table val = "6">
                     <caption>Crypto Currency</caption>
