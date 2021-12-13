@@ -14,33 +14,6 @@ from rest_framework import generics
 
 
 # Create your views here.
-@api_view(['GET'])
-def apiOverview(request):
-    
-    api_urls = {
-        'AddBrokerages':'/AddBrokerage',
-        'CreateBondOrder':'/CreateBondOrder',
-        'CreateCashOrder':'/CreateCashOrder',
-        'CreateCommoditiesOrder':'/CreateCommoditiesOrder',
-        'CreateCryptoOrder':'/CreateCryptoOrder',
-        'CreateRegularStockOrder':'/CreateOrder',
-        'CreateRealEstateOrder':'/CreateRealEstateOrder',
-        'ModifyBondOrder':'/ModifyBondOrder',
-        'ModifyCashOrder':'/ModifyCashOrder',
-        'ModifyCommoditiesOrder':'/ModifyCommoditiesOrder',
-        'ModifyCryptoOrder':'/ModifyCryptoOrder',
-        'ModifyBondOrder':'/ModifyBondOrder',
-        'ModifyRegularStockOrder':'/ModifyOrder',
-        'ModifyRealEstateOrder':'/ModifyRealEstateOrder',
-        'Sign-in' : '/SignIn',
-        'Sign-Up':'/SignUp',
-        'GetStockOrderHistory' :'/GetStockOrderHistory',
-        'DeleteOrderbyID':'/DeleteOrderbyID',
-        'DeletebyOrderReqID':'/DeletebyOrderReqID',
-        'CreateOrdersFromImport':'/CreateOrdersFromImport',
-    }
-    return Response(api_urls)
-
 
 class BrokeragesGetPost(generics.ListCreateAPIView):
     queryset = Brokerage.objects.all()
