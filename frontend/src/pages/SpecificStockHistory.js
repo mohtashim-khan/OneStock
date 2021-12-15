@@ -37,7 +37,7 @@ function SpecificStockHistory(){
             .then(response => response.json())
             .then(data => setStock(data));
     }
-    console.log(ticker)
+    
 
     return(
         <>

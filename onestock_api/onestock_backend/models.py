@@ -79,6 +79,7 @@ class OrderForm(models.Model):
 
 class Order(models.Model):
     ticker = models.CharField(max_length = 100)
+    buysell = models.CharField(max_length = 1)
     quantity = models.IntegerField()
     purchasePrice = models.IntegerField()
     purchaseTime = models.DateTimeField(max_length = 100)
@@ -141,7 +142,6 @@ class Commodities(models.Model):
 
 class CryptoCurrency(models.Model):
     valuation = models.BigIntegerField()
-    location = models.CharField(max_length = 100)
     name = models.CharField(max_length = 100)
     purchasePrice = models.BigIntegerField()
     quantity = models.BigIntegerField()
