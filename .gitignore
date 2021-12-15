@@ -1,3 +1,4 @@
 .vscode/settings.json
 onestock_api/onestock_api/__pycache__
 onestock_api/onestock_backend/__pycache__
+onestock_api/onestock_backend/migrations
