@@ -22,6 +22,7 @@ urlpatterns = [
     path('TotalStockOrderHistoryGetPost/', views.TotalStockOrderHistoryGetPost.as_view(), name = "TotalStockOrderHistoryGetPost"),
     path('TotalStockOrderHistoryPutPatchDelete/<int:pk>/', views.TotalStockOrderHistoryPutPatchDelete.as_view(), name = "TotalStockOrderHistoryPutPatchDelete"),
     path('CreateUser/', views.CreateUser.as_view(), name = "CreateUser"),
+    path('LogOut/', views.BlacklistTokenUpdateView.as_view(), name = "logout"),
     path('OrderFormGetPost/', views.OrderFormGetPost.as_view(), name = "OrderFormGetPost"),
     path('OrderFormPutPatchDelete/<int:pk>/', views.OrderFormPutPatchDelete.as_view(), name = "OrderFormPutPatchDelete"),
     path('DividendGetPost/', views.DividendGetPost.as_view(), name = "DividendGetPost"),

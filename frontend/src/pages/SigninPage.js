@@ -1,31 +1,45 @@
 import React, { Component } from 'react';
 import { useEffect, useState } from "react"
+import { useNavigate } from 'react-router-dom';
 import "../css/SignIn.css"
+import axiosInstance from '../axios';
+
 
 const SignIn = () => {
 
-    const [username, setUsername] = useState('');
+    const [user_name, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [output, setOutput] = useState('');
+    const navigate = useNavigate();
+
 
     
     
     const handleSubmit = (e) => {
         e.preventDefault()
         const userInfo = {
-            username,
+            user_name,
             password
         }
 
-        fetch('http://localhost:3000/SignIn',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(userInfo)
-            }).then(() => {
-                console.log('User info Sent!');
-            })
+        axiosInstance
+        .post(`token/`, {
+            user_name: userInfo.user_name,
+            password: userInfo.password,
+
+        })
+        .then((res) => {
+            localStorage.setItem('access_token', res.data.access);
+			localStorage.setItem('refresh_token', res.data.refresh);
+			axiosInstance.defaults.headers['Authorization'] =
+					'JWT ' + localStorage.getItem('access_token');
+			navigate('/Home');
+        })
+        .catch((err) => {
+            setOutput("INCORRECT USERNAME/PASSWORD");
+        }
+
+        );
     }
 
 
@@ -40,7 +54,7 @@ const SignIn = () => {
                     <label>Username: </label>
                     <input type="text"
                         required
-                        value={username}
+                        value={user_name}
                         onChange={(e) => setUsername(e.target.value)} />
 
                     <label>Password: </label>
@@ -54,10 +68,11 @@ const SignIn = () => {
 
                 <button onClick={(e) => {
                     e.preventDefault();
-                    window.location.href = "/CreateAccount";
+                    window.location.href = "/SignUp";
                 }
                 }>Create Account</button>
 
+                <div>{output}</div>
 
             </div>
 

@@ -1,35 +1,46 @@
 import React, { Component } from 'react';
+import axiosInstance from '../axios';
 import { useState } from "react"
 import "../css/SignUp.css"
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
 
-    const [username, setUsername] = useState('');
+    const [user_name, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [isSuperUser, setisSuperUser] = useState('');
+    const [isSuperUser, setisSuperUser] = useState('True');
+    const [output, setOutput] = useState('');
+    const navigate = useNavigate();
 
 
 
     const handleSubmit = (e) => {
         e.preventDefault()
         const userInfo = {
-            username,
+            user_name,
             password,
             email,
             isSuperUser
         }
 
-        fetch('http://localhost:3000/SignUp',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(userInfo)
-            }).then(() => {
-                console.log(userInfo);
+        axiosInstance
+            .post(`CreateUser/`, {
+                user_name: userInfo.user_name,
+                password: userInfo.password,
+                email: userInfo.email,
+                isSuperUser: userInfo.isSuperUser,
             })
+            .then((res) => {
+                navigate('/SignIn');
+                console.log(res);
+                console.log(res.data);
+            })
+            .catch((err) => {
+                setOutput("!!!!ERROR!!!!");
+            }
+
+            );
     }
 
     return (
@@ -42,7 +53,7 @@ const SignUp = () => {
                     <label>Username: </label>
                     <input type="text"
                         required
-                        value={username}
+                        value={user_name}
                         onChange={(e) => setUsername(e.target.value)} />
 
                     <label>Password: </label>
@@ -59,14 +70,16 @@ const SignUp = () => {
 
                     <label>Super-User: </label>
                     <select
-                    required
-                    value={isSuperUser}
-                    onChange={(e) => setisSuperUser(e.target.value)}>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
+                        required
+                        value={isSuperUser}
+                        onChange={(e) => setisSuperUser(e.target.value)}>
+                        <option value="True">Yes</option>
+                        <option value="False">No</option>
                     </select>
 
                     <button>Sign-Up</button>
+
+
                 </form>
 
                 <button onClick={(e) => {
@@ -74,6 +87,8 @@ const SignUp = () => {
                     window.location.href = "/";
                 }
                 }>Back To Sign-In</button>
+
+                <div>{output}</div>
 
 
             </div>
