@@ -10,13 +10,19 @@ const NavBar = () => {
     const navigate = useNavigate();
     const handleLogout = () => {
         axiosInstance
-        .post('user/logout/blacklist/', {
-			refresh_token: localStorage.getItem('refresh_token'),
-		});
+        .post('LogOut/', {
+            refresh_token: localStorage.getItem('refresh_token'),
+        })
+        .catch((err) => {
+            handleError();
+        });
 		localStorage.removeItem('access_token');
 		localStorage.removeItem('refresh_token');
 		axiosInstance.defaults.headers['Authorization'] = null;
 		navigate('/SignIn');
+    }
+    const handleError = () => {
+        alert("ERROR LOGGING OUT");
     }
     
     return (
