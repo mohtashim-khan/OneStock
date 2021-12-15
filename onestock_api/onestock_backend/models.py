@@ -35,7 +35,7 @@ class OrderForm(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return self.id
+        return str(self.id)
 
 class Order(models.Model):
     ticker = models.CharField(max_length = 100)
@@ -45,7 +45,7 @@ class Order(models.Model):
     orderReqID = models.ForeignKey(OrderForm, on_delete=models.CASCADE)
     
     def __str__(self) -> str:
-        return self.id
+        return str(self.id)
 
 class TotalStockHistory(models.Model):
     uniqueTickers = models.BigIntegerField()

@@ -66,7 +66,7 @@ class StockOrdersGetPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
 
 class RealEstateGetPost(generics.ListCreateAPIView):
     queryset = RealEstate.objects.all()
-    serialzer_class = RealEstateSerializer
+    serializer_class = RealEstateSerializer
 
 class RealEstatePutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = RealEstate.objects.all()
@@ -98,15 +98,15 @@ class UserPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
 
 class OrderFormGetPost(generics.ListCreateAPIView):
     queryset = OrderForm.objects.all()
-    serialzer_class = OrderFormSerilaizer
+    serializer_class = OrderFormSerializer
 
 class OrderFormPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = OrderForm.objects.all()
-    serializer_class = OrderFormSerilaizer
+    serializer_class = OrderFormSerializer
 
 class DividendGetPost(generics.ListCreateAPIView):
     queryset = Dividend.objects.all()
-    serialzer_class = DividendSerializer
+    serializer_class = DividendSerializer
 
 class DividendPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = Dividend.objects.all()
@@ -114,7 +114,7 @@ class DividendPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
 
 class AccountGetPost(generics.ListCreateAPIView):
     queryset = Account.objects.all()
-    serialzer_class = AccountSerializer
+    serializer_class = AccountSerializer
 
 class AccountPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = Account.objects.all()

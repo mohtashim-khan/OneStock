@@ -18,7 +18,7 @@ class BrokerageSerializer(serializers.ModelSerializer):
         model = Brokerage
         fields ='__all__'
 
-class OrderFormSerilaizer(serializers.ModelSerializer):
+class OrderFormSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderForm
         fields ='__all__'

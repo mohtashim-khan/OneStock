@@ -1,8 +1,44 @@
-import React from 'react'
 
 import "../css/SearchBar.css"
 import NavBar from '../components/Navbar';
+import React, { useEffect,useState } from 'react';
 function SpecificStockHistory(){
+    const [entryorders,setOrder] = useState(null);
+    const [entrydividend,setDividend] = useState(null);
+    const [entryStock,setStock] = useState(null);
+    const [ticker, setTicker] = useState('');
+    const [button, setButton] = useState(null);
+    
+    // useEffect(() => {
+    //     // GET request using fetch inside useEffect React hook
+    //     fetch('http://localhost:8000/api/SpecificStockOrderHistoryGetPost/?format=json&ticker='+ticker)
+    //         .then(response => response.json())
+    //         .then(data => setentrys(data));
+            
+    
+    // // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    // }, []);
+
+   
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        fetch('http://localhost:8000/api/SpecificStockOrderHistoryGetPost/?format=json&ticker='+ticker)
+            .then(response => response.json())
+            .then(data => setOrder(data));
+            
+
+        fetch('http://localhost:8000/api/DividendGetPost/?format=json&ticker='+ticker)
+            .then(response => response.json())
+            .then(data => setDividend(data));
+
+        fetch('http://localhost:8000/api/StockGetPost/?format=json&ticker='+ticker)
+            .then(response => response.json())
+            .then(data => setStock(data));
+    }
+    console.log(ticker)
+
     return(
         <>
 
@@ -46,15 +82,19 @@ function SpecificStockHistory(){
             </table>
            
 
-            <form class="form-wrapper">
-                <input type="text" id="search" placeholder="Search by Stock Ticker eg. XYZ ..." required/>
-                <input type="submit" value="Search" id="submit"/>
+            <form class="form-wrapper" onSubmit={handleSubmit}>
+                
+                    
+                <input type="text" placeholder="Enter Specific Ticker e.g TSLA.." onChange={(e) => setTicker(e.target.value)}></input>
+                <input type="submit" name="submit" value="Search" /> 
+                
+                
             </form>
 
 
 
         </div>
-    </>
+        </>
     );
 }
 

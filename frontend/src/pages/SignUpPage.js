@@ -66,7 +66,9 @@ const SignUp = () => {
                         <option value="No">No</option>
                     </select>
 
-                    <button>Sign-Up</button>
+                    <button> 
+                        Sign-Up
+                        </button>
                 </form>
 
                 <button onClick={(e) => {
