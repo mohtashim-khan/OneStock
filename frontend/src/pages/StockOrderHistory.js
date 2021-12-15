@@ -4,7 +4,7 @@ import "../css/StockOrderHistory.css"
 import React, { useEffect,useState } from 'react';
 
 const StockOrderHistory = () => {
-    const value = 'hello';
+    
     const [entrys,setentrys] = useState(null);
     const query = '?userID=1';
     useEffect(() => {
