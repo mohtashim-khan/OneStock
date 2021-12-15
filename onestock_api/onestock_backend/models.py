@@ -90,7 +90,7 @@ class TotalStockHistory(models.Model):
     uniqueTickers = models.BigIntegerField()
     totalInvested = models.BigIntegerField()
     quantityOfTrades = models.BigIntegerField()
-    netProfit = models.BigIntegerField()
+    netValue = models.BigIntegerField()
     user = models.ForeignKey(User, on_delete=CASCADE)
 
     def __str__(self) -> str:
