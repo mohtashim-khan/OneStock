@@ -1,15 +1,12 @@
 from django.db.models.query import QuerySet
-from django.http.response import JsonResponse
-from django.shortcuts import render
-from django.http import JsonResponse
-
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.serializers import Serializer
+from rest_framework.views import APIView
 from .serializers import *
 from .models import *
 from rest_framework import status
 from rest_framework import generics
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 
@@ -66,7 +63,7 @@ class StockOrdersGetPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
 
 class RealEstateGetPost(generics.ListCreateAPIView):
     queryset = RealEstate.objects.all()
-    serialzer_class = RealEstateSerializer
+    serializer_class = RealEstateSerializer
 
 class RealEstatePutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = RealEstate.objects.all()
@@ -88,17 +85,36 @@ class TotalStockOrderHistoryPutPatchDelete(generics.RetrieveUpdateDestroyAPIView
     queryset = TotalStockHistory.objects.all()
     serializer_class = TotalStockHistorySerializer
 
-class UserGetPost(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+#User SignUp
+class CreateUser(APIView):
+    permission_classes = [AllowAny]
 
-class UserPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    def post(self, request, format='json'):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                json = serializer.data
+                return Response(json, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class BlacklistTokenUpdateView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = ()
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class OrderFormGetPost(generics.ListCreateAPIView):
     queryset = OrderForm.objects.all()
-    serialzer_class = OrderFormSerilaizer
+    serializer_class = OrderFormSerilaizer
 
 class OrderFormPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = OrderForm.objects.all()
@@ -106,7 +122,7 @@ class OrderFormPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
 
 class DividendGetPost(generics.ListCreateAPIView):
     queryset = Dividend.objects.all()
-    serialzer_class = DividendSerializer
+    serializer_class = DividendSerializer
 
 class DividendPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = Dividend.objects.all()
@@ -114,7 +130,7 @@ class DividendPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
 
 class AccountGetPost(generics.ListCreateAPIView):
     queryset = Account.objects.all()
-    serialzer_class = AccountSerializer
+    serializer_class = AccountSerializer
 
 class AccountPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = Account.objects.all()
