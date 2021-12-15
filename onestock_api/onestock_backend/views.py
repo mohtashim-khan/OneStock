@@ -114,11 +114,11 @@ class BlacklistTokenUpdateView(APIView):
 
 class OrderFormGetPost(generics.ListCreateAPIView):
     queryset = OrderForm.objects.all()
-    serializer_class = OrderFormSerilaizer
+    serializer_class = OrderFormSerializer
 
 class OrderFormPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = OrderForm.objects.all()
-    serializer_class = OrderFormSerilaizer
+    serializer_class = OrderFormSerializer
 
 class DividendGetPost(generics.ListCreateAPIView):
     queryset = Dividend.objects.all()

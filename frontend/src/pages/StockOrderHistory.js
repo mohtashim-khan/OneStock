@@ -4,31 +4,35 @@ import "../css/StockOrderHistory.css"
 import React, { useEffect,useState } from 'react';
 
 const StockOrderHistory = () => {
-
-    const value = 'hello';
-    const [entry,setentry] = useState(null);
+    
+    const [entrys,setentrys] = useState(null);
     const query = '?userID=1';
     useEffect(() => {
         // GET request using fetch inside useEffect React hook
-        fetch('https://localhost:4000/api/GetStockOrderHistory'+query)
+        fetch('http://localhost:8000/api/StockOrdersGetPost/?format=json')
             .then(response => response.json())
-            .then(data => setentry(data.total));
+            .then(data => setentrys(data));
     
     // empty dependency array means this effect will only run once (like componentDidMount in classes)
     }, []);
-
+    
+    
+    
+        
     return (
         <div className="content">
             <NavBar />
             <h2>Stock Order History</h2>
-            <div1>{entry}</div1>
+            
             <div className="StockOrderHistory">
                 <div className="buttonsContainer">
                     <button>Import From PC</button>
-                    <button> Create Custom Order</button>
-                    <button>Modify Order By ID</button>
-                    <button>Delete Order By ID</button>
-                    <button>Delete Order by OrderReqID</button>
+
+                    <button onClick={(e) => {window.location.href="/CreateOrder";}}>Create Custom Order</button>
+                    
+                    <button onClick={(e) => {window.location.href="/ModifyOrder";}}>Modify Order By ID</button>
+                    <button onClick={(e) => {window.location.href="/AddBrokerage";}}>Add Brokerage</button>
+                  
                 </div>
                 
 
@@ -46,14 +50,24 @@ const StockOrderHistory = () => {
                         <th>OrderReqID</th>
                         <th>Account</th>
                     </tr>
+                    {entrys&&
+                        entrys.map((entry) => (
+                            <tr>
+                                <th>{entry.id}</th>
+                                <th>{entry.ticker}</th>
+                                <th>{entry.purchasePrice}</th>
+                                <th>{entry.quantity}</th>
+                                <th>{entry.purchaseTime}</th>
+                                <th>{entry.purchasePrice*entry.quantity}</th>
+                                <th>{entry.orderReqID}</th>
+                                
+                            </tr>
+                        ))
+                    }
+                    
                 </table>
             </div>
-
-
         </div>
-
-
-
     );
 }
 

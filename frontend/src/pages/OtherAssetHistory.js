@@ -1,11 +1,43 @@
-import React from 'react'
 
 
-
+import NavBar from '../components/Navbar';
+import React, { useEffect,useState } from 'react';
 function OtherAssetHistory(){
+    const [entrycrypto,setCrypto] = useState(null);
+    const [entrycash,setCash] = useState(null);
+    const [entrybonds,setBonds] = useState(null);
+    const [entrycommod,setCommod] = useState(null);
+    const [entryreales,setReales] = useState(null);
+    useEffect(() => {
+        // GET request using fetch inside useEffect React hook
+        fetch('http://localhost:8000/api/CryptoGetPost/?format=json')
+            .then(response => response.json())
+            .then(data => setCrypto(data));
+        
+        fetch('http://localhost:8000/api/RealEstateGetPost/?format=json')
+            .then(response => response.json())
+            .then(data => setReales(data));
+
+        fetch('http://localhost:8000/api/CommodotiesGetPost/?format=json')
+            .then(response => response.json())
+            .then(data => setCommod(data));
+        
+        fetch('http://localhost:8000/api/BondsGetPost/?format=json')
+            .then(response => response.json())
+            .then(data => setBonds(data));
+        
+        fetch('http://localhost:8000/api/CashGetPost/?format=json')
+            .then(response => response.json())
+            .then(data => setCash(data));
+    
+    // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    }, []);
+    
     return(
         <>
             <div>
+        
+            <NavBar/>
                 <h2>Other Asset Order History</h2>
                 <table val = "6">
                     <caption>Crypto Currency</caption>
@@ -56,11 +88,22 @@ function OtherAssetHistory(){
                         
                     </tr>
                 </table>
+                
                 <group>
-                    <button>Add Asset</button>
-                    <button>Delete Asset</button>
-                    <button>Modify Asset by ID</button>
+                    <button onClick={(e) => {window.location.href="/CreateCryptoOrder";}}>Add Crypto</button>
+                    <button onClick={(e) => {window.location.href="/CreateRealEstateOrder";}}>Add Real Estate</button>
+                    <button onClick={(e) => {window.location.href="/CreateCashOrder";}}>Add Cash</button>
+                    <button onClick={(e) => {window.location.href="/CreateBondOrder";}}>Add Bond</button>
+                    <button onClick={(e) => {window.location.href="/CreateCommoditiesOrder";}}>Add Commodities</button>
+                    
                 </group>
+                <group2>
+                    <button onClick={(e) => {window.location.href="/ModifyCryptoOrder";}}>Modify Crypto</button>
+                    <button onClick={(e) => {window.location.href="/ModifyRealEstateOrder";}}>Modify Real Estate</button>
+                    <button onClick={(e) => {window.location.href="/ModifyCashOrder";}}>Modify Cash</button>
+                    <button onClick={(e) => {window.location.href="/ModifyBondOrder";}}>Modify Bond</button>
+                    <button onClick={(e) => {window.location.href="/ModifyCommoditiesOrder";}}>Modify Commodities</button>
+                </group2>
                
                 
             </div>

@@ -84,6 +84,9 @@ td {
 tr:nth-child(even) {
     background-color: #eee;
 }
+tr:nth-child(odd) {
+    background-color: #eee;
+}
 
 th[scope="col"] {
     background-color: #000000;
@@ -201,6 +204,13 @@ table[val = "10"] {
     Left: 700px
 }
 group{
+    position: absolute;
+    width: 170px;
+    height: 60px;
+    Left: 350px;
+    top: 270px;
+}
+group2{
     position: absolute;
     width: 170px;
     height: 60px;
