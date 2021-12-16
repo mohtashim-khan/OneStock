@@ -16,7 +16,7 @@ const StockOrderHistory = () => {
                 setentrys(response.data);
             })
             .catch((err) => {
-                console.log(err);
+                alert("NOT LOGGED IN");
             }
 
             );

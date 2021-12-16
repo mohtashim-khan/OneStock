@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.db.models.fields.related import ForeignKey
 
 # Create your models here.
 
@@ -49,14 +50,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['email', 'isSuperUser']
     def __str__(self) -> str:
         return str(self.user_name)
-    
-class Account(models.Model):
-    accountValue = models.IntegerField()
-    accountType = models.CharField(max_length=100)
-    user = models.ForeignKey(User, on_delete = models.CASCADE)
-    
-    def __str__(self) -> str:
-        return str(self.user) + self.accountType
 
 class Brokerage(models.Model):
     name = models.CharField(max_length=100)
@@ -66,12 +59,24 @@ class Brokerage(models.Model):
 
     def __str__(self) -> str:
         return self.name
+    
+class Account(models.Model):
+    accountValue = models.IntegerField()
+    accountType = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    brokerage = ForeignKey(Brokerage, on_delete=models.CASCADE)
+    
+    def __str__(self) -> str:
+        return str(self.user) + self.accountType
+
+
 
 class OrderForm(models.Model):
     typeofFile = models.CharField(max_length = 100)
     numOfOrders = models.IntegerField()
     dateRequested = models.DateField(max_length = 100)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
+
 
 
     def __str__(self) -> str:

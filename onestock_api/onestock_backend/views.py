@@ -139,7 +139,7 @@ class SpecificStockOrderHistoryGetPost(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Specific_Stock_History.objects.filter(user=user)
+        return Specific_Stock_History.objects.filter(stockHistoryID__in = TotalStockHistory.objects.filter(user = user))
 
 
 class SpecificStockOrderHistoryPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
@@ -204,8 +204,7 @@ class OrderFormGetPost(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        accounts = Account.objects.filter(user=user)
-        return OrderForm.objects.filter(account = accounts)
+        return OrderForm.objects.filter(account__in = Account.objects.filter(user = user))
 
 
 class OrderFormPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
@@ -214,8 +213,7 @@ class OrderFormPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        accounts = Account.objects.filter(user=user)
-        return OrderForm.objects.filter(account = accounts)
+        return OrderForm.objects.filter(account__in = Account.objects.filter(user = user))
 
 
 class DividendGetPost(generics.ListCreateAPIView):
