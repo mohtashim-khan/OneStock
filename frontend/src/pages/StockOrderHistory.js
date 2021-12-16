@@ -9,21 +9,6 @@ import axiosInstance from '../axios';
 const StockOrderHistory = () => {
     
     const [entrys,setentrys] = useState(null);
-<<<<<<< HEAD
-    useEffect(() => {
-        
-        axiosInstance
-            .get(`StockOrdersGetPost/`)
-            .then(response => {
-                setentrys(response.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            }
-
-            );
-=======
->>>>>>> a782daf (added axios get push patch to various pages)
     
     
     // useEffect(() => {
