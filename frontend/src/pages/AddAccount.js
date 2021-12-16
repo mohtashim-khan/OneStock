@@ -3,7 +3,7 @@ import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/AddBrokerage.css"
 import axiosInstance from '../axios';
-const AddBrokerage = () => {
+const AddAccount = () => {
 
     const [name, setName] = useState('');
     const [fees, setFees] = useState('');
