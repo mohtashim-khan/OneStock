@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
-
+import axiosInstance from '../axios';
 const CreateCryptoOrder = () => {
 
     const [valuation, setValuation] = useState('');
@@ -23,16 +23,18 @@ const CreateCryptoOrder = () => {
             quantity
         }
 
-        fetch('http://localhost:3000/CreateCryptoOrder',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(OrderInfo)
-            }).then(() => {
-                console.log(OrderInfo);
-            })
+        axiosInstance
+        .post('CryptoGetPost/', {
+            valuation: OrderInfo.valuation,
+            type: OrderInfo.type,
+            price: OrderInfo.price,
+            quantity: OrderInfo.quantity,
+            
+        })
+        .catch((err) => {
+            alert("Error");
+        }
+        );
     }
 
     return (

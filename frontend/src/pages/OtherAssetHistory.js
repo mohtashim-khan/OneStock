@@ -2,33 +2,71 @@
 
 import NavBar from '../components/Navbar';
 import React, { useEffect,useState } from 'react';
+import axiosInstance from '../axios';
 function OtherAssetHistory(){
     const [entrycryptos,setCrypto] = useState(null);
     const [entrycashs,setCash] = useState(null);
     const [entrybonds,setBonds] = useState(null);
     const [entrycommods,setCommod] = useState(null);
     const [entryreales,setReales] = useState(null);
+    
     useEffect(() => {
         // GET request using fetch inside useEffect React hook
-        fetch('http://localhost:8000/api/CryptoGetPost/?format=json')
-            .then(response => response.json())
-            .then(data => setCrypto(data));
-        
-        fetch('http://localhost:8000/api/RealEstateGetPost/?format=json')
-            .then(response => response.json())
-            .then(data => setReales(data));
+        axiosInstance
+        .get("CryptoGetPost/")
+            .then(response => {
+                setCrypto(response.data)
+            })
+            .catch((err) => {
+                alert("permission denied");
+            }
 
-        fetch('http://localhost:8000/api/CommodotiesGetPost/?format=json')
-            .then(response => response.json())
-            .then(data => setCommod(data));
+            );
         
-        fetch('http://localhost:8000/api/BondsGetPost/?format=json')
-            .then(response => response.json())
-            .then(data => setBonds(data));
+        axiosInstance
+        .get("RealEstateGetPost/")
+            .then(response => {
+                setReales(response.data)
+            })
+            .catch((err) => {
+                alert("permission denied");
+            }
+
+            );
+
+        axiosInstance
+        .get("CommodotiesGetPost/")
+            .then(response => {
+                setCommod(response.data)
+            })
+            .catch((err) => {
+                alert("permission denied");
+            }
+
+            );
         
-        fetch('http://localhost:8000/api/CashGetPost/?format=json')
-            .then(response => response.json())
-            .then(data => setCash(data));
+        
+        axiosInstance
+        .get("BondsGetPost/")
+            .then(response => {
+                setBonds(response.data)
+            })
+            .catch((err) => {
+                alert("permission denied");
+            }
+
+            );
+        
+        axiosInstance
+        .get("CashGetPost/")
+            .then(response => {
+                setCash(response.data)
+            })
+            .catch((err) => {
+                alert("permission denied");
+            }
+
+            );
     
     // empty dependency array means this effect will only run once (like componentDidMount in classes)
     }, []);

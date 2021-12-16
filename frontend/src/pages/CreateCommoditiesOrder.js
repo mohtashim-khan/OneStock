@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
-
+import axiosInstance from '../axios';
 const CreateCommoditiesOrder = () => {
 
     const [valuation, setValuation] = useState('');
@@ -21,16 +21,16 @@ const CreateCommoditiesOrder = () => {
             type
         }
 
-        fetch('http://localhost:3000/CreateCommoditiesOrder',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(OrderInfo)
-            }).then(() => {
-                console.log(OrderInfo);
-            })
+        axiosInstance
+        .post('CommodotiesGetPost/', {
+            valuation: OrderInfo.valuation,
+            type: OrderInfo.type,
+            
+        })
+        .catch((err) => {
+            alert("Error");
+        }
+        );
     }
 
     return (

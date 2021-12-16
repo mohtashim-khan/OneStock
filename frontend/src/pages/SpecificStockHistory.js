@@ -2,12 +2,13 @@
 import "../css/SearchBar.css"
 import NavBar from '../components/Navbar';
 import React, { useEffect,useState } from 'react';
+import axiosInstance from '../axios';
 function SpecificStockHistory(){
     const [entryorders,setOrder] = useState(null);
     const [entrydividend,setDividend] = useState(null);
     const [entryStock,setStock] = useState(null);
     const [ticker, setTicker] = useState('');
-    const [button, setButton] = useState(null);
+    
     
     // useEffect(() => {
     //     // GET request using fetch inside useEffect React hook
@@ -23,19 +24,45 @@ function SpecificStockHistory(){
 
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        fetch('http://localhost:8000/api/SpecificStockOrderHistoryGetPost/?format=json&ticker='+ticker)
-            .then(response => response.json())
-            .then(data => setOrder(data));
+        
+        axiosInstance
+        .get('SpecificStockOrderHistoryGetPost/?format=json&ticker='+ticker)
+            .then(response => {
+                setOrder(response.data)
+            })
+            .catch((err) => {
+                console.log(err)
+                alert("permission denied");
+            }
             
 
-        fetch('http://localhost:8000/api/DividendGetPost/?format=json&ticker='+ticker)
-            .then(response => response.json())
-            .then(data => setDividend(data));
+            );
+        axiosInstance
+        .get('DividendGetPost/?format=json&ticker='+ticker)
+        .then(response => {
+            setDividend(response.data)
+        })
+        .catch((err) => {
+            console.log(err)
+            alert("permission denied");
+        }
+        
 
-        fetch('http://localhost:8000/api/StockGetPost/?format=json&ticker='+ticker)
-            .then(response => response.json())
-            .then(data => setStock(data));
+        );
+
+        axiosInstance
+        .get('StockGetPost/?format=json&ticker='+ticker)
+        .then(response => {
+            setStock(response.data)
+        })
+        .catch((err) => {
+            console.log(err)
+            alert("permission denied");
+        }
+        
+
+        );
+
     }
     
 

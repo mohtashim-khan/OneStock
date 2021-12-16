@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
-
+import axiosInstance from '../axios';
 const CreateOrder = () => {
 
     const [ticker, setTicker] = useState('');
@@ -28,17 +28,23 @@ const CreateOrder = () => {
             brokerage,
             buyOrSell
         }
-
-        fetch('http://localhost:3000/CreateOrder',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(OrderInfo)
-            }).then(() => {
-                console.log(OrderInfo);
-            })
+    
+        axiosInstance
+        .post('StockOrdersGetPost/', {
+            ticker: OrderInfo.ticker,
+            price: OrderInfo.price,
+            quantity: OrderInfo.quantity,
+            date: OrderInfo.date,
+            account: OrderInfo.account,
+            brokerage: OrderInfo.brokerage,
+            buyOrSell: OrderInfo.buyOrSell,
+        
+            
+        })
+        .catch((err) => {
+            alert("Error");
+        }
+        );
     }
 
     return (

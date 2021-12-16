@@ -5,9 +5,11 @@ import React, { useEffect,useState } from 'react';
 import axiosInstance from '../axios';
 
 
+import axiosInstance from '../axios';
 const StockOrderHistory = () => {
     
     const [entrys,setentrys] = useState(null);
+<<<<<<< HEAD
     useEffect(() => {
         
         axiosInstance
@@ -20,11 +22,35 @@ const StockOrderHistory = () => {
             }
 
             );
+=======
+>>>>>>> a782daf (added axios get push patch to various pages)
     
-    // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    
+    // useEffect(() => {
+    //     // GET request using fetch inside useEffect React hook
+    //     fetch('http://localhost:8000/api/StockOrdersGetPost/?format=json')
+    //         .then(response => response.json())
+    //         .then(data => setentrys(data));
+    
+    // // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    // }, []);
+        
+    useEffect(() => {
+        axiosInstance
+        .get('StockOrdersGetPost/')
+            .then(response => {
+                setentrys(response.data)
+            })
+            .catch((err) => {
+                console.log(err)
+                alert("permission denied");
+            }
+           
+
+            );
+   
     }, []);
-    
-    
+   
     
         
     return (

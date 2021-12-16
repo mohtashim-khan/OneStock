@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/AddBrokerage.css"
-
+import axiosInstance from '../axios';
 const AddBrokerage = () => {
 
     const [name, setName] = useState('');
@@ -20,17 +20,28 @@ const AddBrokerage = () => {
             perOrderFees,
             currencyConversionRate
         }
+        axiosInstance
+        .post('BrokeragesGetPost/', {
+            name: brokerageInfo.name,
+            fees: brokerageInfo.fees,
+            perOrderFees: brokerageInfo.perOrderFees,
+            currencyConversionRate: brokerageInfo.currencyConversionRate,
 
-        fetch('http://localhost:3000/AddBrokerage',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(brokerageInfo)
-            }).then(() => {
-                console.log(brokerageInfo);
-            })
+        })
+        .catch((err) => {
+            alert("Error");
+        }
+        );
+        // fetch('http://localhost:3000/AddBrokerage',
+        //     {
+        //         method: 'POST',
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         },
+        //         body: JSON.stringify(brokerageInfo)
+        //     }).then(() => {
+        //         console.log(brokerageInfo);
+        //     })
     }
 
     return (
