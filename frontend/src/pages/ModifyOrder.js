@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
-
+import axiosInstance from '../axios';
 const ModifyOrder = () => {
 
-    const [orderId, setOrderID] = useState('ID Value');
+    const [orderID, setOrderID] = useState('ID Value');
     const [ticker, setTicker] = useState('previousValue');
     const [price, setPrice] = useState('previousValue');
     const [quantity, setQuantity] = useState('previousValue');
@@ -21,7 +21,7 @@ const ModifyOrder = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         const OrderInfo = {
-            orderId,
+            orderID,
             ticker,
             price,
             quantity,
@@ -31,16 +31,21 @@ const ModifyOrder = () => {
             buyOrSell
         }
 
-        fetch('http://localhost:3000/ModifyOrderID',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(OrderInfo)
-            }).then(() => {
-                console.log(OrderInfo);
-            })
+        axiosInstance
+        .patch('StockOrdersGetPutPatchDelete/'+OrderInfo.orderID, {
+            ticker: OrderInfo.ticker,
+            price: OrderInfo.price,
+            quantity: OrderInfo.quantity,
+            date: OrderInfo.date,
+            account: OrderInfo.account,
+            brokerage: OrderInfo.brokerage,
+            buyOrSell: OrderInfo.buyOrSell,
+
+        })
+        .catch((err) => {
+            alert("No existing Order, please add the Order first");
+        }
+        );
     }
 
     return (
@@ -53,7 +58,7 @@ const ModifyOrder = () => {
                     <label>OrderID: </label>
                     <input type="number"
                         required
-                        value={orderId}
+                        value={orderID}
                         onChange={(e) => setOrderID(e.target.value)} />
 
                     <label>Ticker: </label>

@@ -11,8 +11,8 @@ const NavBar = () => {
     const handleLogout = () => {
         axiosInstance
         .post('LogOut/', {
-			refresh_token: localStorage.getItem('refresh_token'),
-		})
+            refresh_token: localStorage.getItem('refresh_token'),
+        })
         .catch((err) => {
             handleError();
         });
@@ -21,7 +21,6 @@ const NavBar = () => {
 		axiosInstance.defaults.headers['Authorization'] = null;
 		navigate('/SignIn');
     }
-
     const handleError = () => {
         alert("ERROR LOGGING OUT");
     }

@@ -2,37 +2,47 @@ import React, { Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
-
+import axiosInstance from '../axios';
 const CreateCryptoOrder = () => {
 
     const [valuation, setValuation] = useState('');
-    const [type, setType] = useState('');
-    const [price, setPrice] = useState('');
+    const [name, setName] = useState('');
+    const [purchasePrice, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
+    let userinfo = null;
+    
+    function parseJwt(token) {
+        if (!token) { return; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
 
-
-
-
+    userinfo = parseJwt(localStorage.getItem('access_token'));
+    
 
     const handleSubmit = (e) => {
         e.preventDefault()
         const OrderInfo = {
             valuation,
-            type,
-            price,
+            name,
+            purchasePrice,
             quantity
         }
 
-        fetch('http://localhost:3000/CreateCryptoOrder',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(OrderInfo)
-            }).then(() => {
-                console.log(OrderInfo);
-            })
+        axiosInstance
+        .post('CryptoGetPost/', {
+            user: userinfo.user_id,
+            valuation: OrderInfo.valuation,
+            name: OrderInfo.name,
+            purchasePrice: OrderInfo.purchasePrice,
+            quantity: OrderInfo.quantity,
+            
+        })
+        .catch((err) => {
+            alert("Error");
+        }
+        );
     }
 
     return (
@@ -48,16 +58,16 @@ const CreateCryptoOrder = () => {
                         value={valuation}
                         onChange={(e) => setValuation(e.target.value)} />
 
-                    <label>Type: </label>
+                    <label>Name: </label>
                     <input type="text"
                         required
-                        value={type}
-                        onChange={(e) => setType(e.target.value)} />
+                        value={name}
+                        onChange={(e) => setName(e.target.value)} />
 
                     <label>Purchase Price: </label>
                     <input type="number"
                         required
-                        value={price}
+                        value={purchasePrice}
                         onChange={(e) => setPrice(e.target.value)} />
 
                     <label>Quantity: </label>

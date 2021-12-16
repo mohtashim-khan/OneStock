@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
-
+import axiosInstance from '../axios';
 const ModifyBondOrder = () => {
 
     const [orderID, setOrderID] = useState('');
@@ -25,17 +25,19 @@ const ModifyBondOrder = () => {
             maturityDate,
             interest
         }
+        axiosInstance
+        .patch('BondsGetPutPatchDelete/'+OrderInfo.orderID, {
+            valuation: OrderInfo.valuation,
+            facevalue: OrderInfo.faceValue,
+            maturityDate: OrderInfo.maturityDate,
+            interest: OrderInfo.interest,
+    
+        })
+        .catch((err) => {
+            alert("No existing asset, please create the asset first");
+        }
+        );
 
-        fetch('http://localhost:3000/ModifyBondOrder',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(OrderInfo)
-            }).then(() => {
-                console.log(OrderInfo);
-            })
     }
 
     return (

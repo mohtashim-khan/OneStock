@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
-
+import axiosInstance from '../axios';
 const CreateOrder = () => {
 
     const [ticker, setTicker] = useState('');
@@ -12,11 +12,16 @@ const CreateOrder = () => {
     const [account, setAccount] = useState('TFSA');
     const [brokerage, setBrokerage] = useState('WealthSimple');
     const [buyOrSell, setbuyOrSell] = useState('BUY');
+    let userinfo = null;
 
+    userinfo = parseJwt(localStorage.getItem('access_token'));
 
-
-
-
+    function parseJwt(token) {
+        if (!token) { return; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
     const handleSubmit = (e) => {
         e.preventDefault()
         const OrderInfo = {
@@ -28,17 +33,24 @@ const CreateOrder = () => {
             brokerage,
             buyOrSell
         }
-
-        fetch('http://localhost:3000/CreateOrder',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(OrderInfo)
-            }).then(() => {
-                console.log(OrderInfo);
-            })
+    
+        axiosInstance
+        .post('StockOrdersGetPost/', {
+            user: userinfo.user_id,
+            ticker: OrderInfo.ticker,
+            purchasePrice: OrderInfo.price,
+            quantity: OrderInfo.quantity,
+            purchaseTime: OrderInfo.date,
+            account: OrderInfo.account,
+            brokerage: OrderInfo.brokerage,
+            buysell: OrderInfo.buyOrSell,
+        
+            
+        })
+        .catch((err) => {
+            alert("Error");
+        }
+        );
     }
 
     return (

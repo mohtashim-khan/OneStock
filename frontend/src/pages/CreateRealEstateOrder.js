@@ -2,15 +2,22 @@ import React, { Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
-
+import axiosInstance from '../axios';
 const CreateRealEstateOrder = () => {
 
     const [valuation, setValuation] = useState('');
     const [type, setType] = useState('');
     const [location, setLocation] = useState('');
     const [address, setAddress] = useState('');
+    let userinfo = null;
+    userinfo = parseJwt(localStorage.getItem('access_token'));
 
-
+    function parseJwt(token) {
+        if (!token) { return; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
 
 
 
@@ -23,17 +30,20 @@ const CreateRealEstateOrder = () => {
             location,
             address
         }
-
-        fetch('http://localhost:3000/CreateRealEstateOrder',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(OrderInfo)
-            }).then(() => {
-                console.log(OrderInfo);
-            })
+        
+        axiosInstance
+        .post('RealEstateGetPost/', {
+            user: userinfo.user_id,
+            valuation: OrderInfo.valuation,
+            type: OrderInfo.type,
+            location: OrderInfo.location,
+            address: OrderInfo.address,
+    
+        })
+        .catch((err) => {
+            alert("Error");
+        }
+        );
     }
 
     return (
