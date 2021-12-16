@@ -8,9 +8,14 @@ const CreateCashOrder = () => {
     const [valuation, setValuation] = useState('');
     const [bank, setBank] = useState('');
     const [currencyType, setCurrencyType] = useState('');
-
-
-
+    let userinfo = null;
+    function parseJwt(token) {
+        if (!token) { return; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
+    userinfo = parseJwt(localStorage.getItem('access_token'));
 
 
     const handleSubmit = (e) => {
@@ -23,9 +28,10 @@ const CreateCashOrder = () => {
 
         axiosInstance
         .post('CashGetPost/', {
+            user: userinfo.user_id,
             valuation: OrderInfo.valuation,
             bank: OrderInfo.bank,
-            currencyType: OrderInfo.currencyType,
+            currency: OrderInfo.currencyType,
         })
         .catch((err) => {
             alert("Error");

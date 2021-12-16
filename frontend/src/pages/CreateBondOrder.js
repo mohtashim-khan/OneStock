@@ -10,10 +10,15 @@ const CreateBondOrder = () => {
     const [maturityDate, setMaturityDate] = useState('');
     const [interest, setInterest] = useState('');
 
+    let userinfo = null;
+    userinfo = parseJwt(localStorage.getItem('access_token'));
 
-
-
-
+    function parseJwt(token) {
+        if (!token) { return; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -25,8 +30,9 @@ const CreateBondOrder = () => {
         }
         axiosInstance
         .post('BondsGetPost/', {
+            user: userinfo.user_id,
             valuation: OrderInfo.valuation,
-            faceValue: OrderInfo.faceValue,
+            principal: OrderInfo.faceValue,
             maturityDate: OrderInfo.maturityDate,
             interest: OrderInfo.interest,
         })
@@ -57,7 +63,7 @@ const CreateBondOrder = () => {
                         onChange={(e) => setFaceValue(e.target.value)} />
 
                     <label>Maturity Date: </label>
-                    <input type="date"
+                    <input type="number"
                         required
                         value={maturityDate}
                         onChange={(e) => setMaturityDate(e.target.value)} />

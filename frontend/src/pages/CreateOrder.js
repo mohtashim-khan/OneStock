@@ -12,11 +12,16 @@ const CreateOrder = () => {
     const [account, setAccount] = useState('TFSA');
     const [brokerage, setBrokerage] = useState('WealthSimple');
     const [buyOrSell, setbuyOrSell] = useState('BUY');
+    let userinfo = null;
 
+    userinfo = parseJwt(localStorage.getItem('access_token'));
 
-
-
-
+    function parseJwt(token) {
+        if (!token) { return; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
     const handleSubmit = (e) => {
         e.preventDefault()
         const OrderInfo = {
@@ -31,13 +36,14 @@ const CreateOrder = () => {
     
         axiosInstance
         .post('StockOrdersGetPost/', {
+            user: userinfo.user_id,
             ticker: OrderInfo.ticker,
-            price: OrderInfo.price,
+            purchasePrice: OrderInfo.price,
             quantity: OrderInfo.quantity,
-            date: OrderInfo.date,
+            purchaseTime: OrderInfo.date,
             account: OrderInfo.account,
             brokerage: OrderInfo.brokerage,
-            buyOrSell: OrderInfo.buyOrSell,
+            buysell: OrderInfo.buyOrSell,
         
             
         })

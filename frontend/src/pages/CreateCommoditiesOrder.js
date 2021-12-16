@@ -9,10 +9,15 @@ const CreateCommoditiesOrder = () => {
     const [type, setType] = useState('');
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
+    let userinfo = null;
+    function parseJwt(token) {
+        if (!token) { return; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
 
-
-
-
+    userinfo = parseJwt(localStorage.getItem('access_token'));
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -23,6 +28,7 @@ const CreateCommoditiesOrder = () => {
 
         axiosInstance
         .post('CommodotiesGetPost/', {
+            user: userinfo.user_id,
             valuation: OrderInfo.valuation,
             type: OrderInfo.type,
             
