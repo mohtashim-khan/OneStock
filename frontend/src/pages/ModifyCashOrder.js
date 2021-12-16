@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
-
+import axiosInstance from '../axios';
 const ModifyCashOrder = () => {
 
     const [orderID, setOrderID] = useState('');
@@ -23,16 +23,17 @@ const ModifyCashOrder = () => {
             currencyType
         }
 
-        fetch('http://localhost:3000/ModifyCashOrder',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(OrderInfo)
-            }).then(() => {
-                console.log(OrderInfo);
-            })
+        axiosInstance
+        .patch('CashGetPutPatchDelete/'+OrderInfo.orderID, {
+            valuation: OrderInfo.valuation,
+            bank: OrderInfo.bank,
+            currencyType: OrderInfo.currencyType,
+    
+        })
+        .catch((err) => {
+            alert("No existing asset, please create the asset first");
+        }
+        );
     }
 
     return (

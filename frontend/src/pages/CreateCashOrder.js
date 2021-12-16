@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
-
+import axiosInstance from '../axios';
 const CreateCashOrder = () => {
 
     const [valuation, setValuation] = useState('');
@@ -21,16 +21,16 @@ const CreateCashOrder = () => {
             currencyType
         }
 
-        fetch('http://localhost:3000/CreateCashOrder',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(OrderInfo)
-            }).then(() => {
-                console.log(OrderInfo);
-            })
+        axiosInstance
+        .post('CashGetPost/', {
+            valuation: OrderInfo.valuation,
+            bank: OrderInfo.bank,
+            currencyType: OrderInfo.currencyType,
+        })
+        .catch((err) => {
+            alert("Error");
+        }
+        );
     }
 
     return (

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
-
+import axiosInstance from '../axios';
 const CreateBondOrder = () => {
 
     const [valuation, setValuation] = useState('');
@@ -23,18 +23,17 @@ const CreateBondOrder = () => {
             maturityDate,
             interest
         }
-
-
-        fetch('http://localhost:3000/ModifyBondOrder',
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(OrderInfo)
-            }).then(() => {
-                console.log(OrderInfo);
-            })
+        axiosInstance
+        .post('BondsGetPost/', {
+            valuation: OrderInfo.valuation,
+            faceValue: OrderInfo.faceValue,
+            maturityDate: OrderInfo.maturityDate,
+            interest: OrderInfo.interest,
+        })
+        .catch((err) => {
+            alert("Error");
+        }
+        );
     }
 
     return (
