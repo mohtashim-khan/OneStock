@@ -4,8 +4,6 @@ import "../css/StockOrderHistory.css"
 import React, { useEffect,useState } from 'react';
 import axiosInstance from '../axios';
 
-
-import axiosInstance from '../axios';
 const StockOrderHistory = () => {
     
     const [entrys,setentrys] = useState(null);
