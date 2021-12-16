@@ -10,13 +10,13 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
-
 # Create your views here.
 
 class BrokeragesGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = Brokerage.objects.all()
     serializer_class = BrokerageSerializer
+
 
 class BrokeragesGetPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
@@ -26,85 +26,151 @@ class BrokeragesGetPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
 
 class BondsGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Bonds.objects.all()
     serializer_class = BondsSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Bonds.objects.filter(user=user)
+
 
 class BondsGetPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Bonds.objects.all()
     serializer_class = BondsSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Bonds.objects.filter(user=user)
+
 
 class CashGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Cash.objects.all()
     serializer_class = CashSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Cash.objects.filter(user=user)
+
 
 class CashGetPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Cash.objects.all()
     serializer_class = CashSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Cash.objects.filter(user=user)
+
 
 class CommodotiesGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Commodities.objects.all()
     serializer_class = CommoditiesSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Commodities.objects.filter(user=user)
+
 
 class CommoditiesGetPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Commodities.objects.all()
     serializer_class = CommoditiesSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Commodities.objects.filter(user=user)
+
 
 class CryptoGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = CryptoCurrency.objects.all()
     serializer_class = CryptoCurrencySerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return CryptoCurrency.objects.filter(user=user)
+
 
 class CrytpoGetPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = CryptoCurrency.objects.all()
     serializer_class = CryptoCurrencySerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return CryptoCurrency.objects.filter(user=user)
+
 
 class StockOrdersGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Order.objects.filter(orderReqID__in = OrderForm.objects.filter(account__in = Account.objects.filter(user = user)))
+        
+
 
 class StockOrdersGetPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Order.objects.filter(orderReqID__in = OrderForm.objects.filter(account__in = Account.objects.filter(user = user)))
+
 
 class RealEstateGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = RealEstate.objects.all()
     serializer_class = RealEstateSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return RealEstate.objects.filter(user=user)
+
 
 class RealEstatePutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = RealEstate.objects.all()
     serializer_class = RealEstateSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return RealEstate.objects.filter(user=user)
+
 
 class SpecificStockOrderHistoryGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Specific_Stock_History.objects.all()
     serializer_class = Specific_Stock_HistorySerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Specific_Stock_History.objects.filter(user=user)
+
 
 class SpecificStockOrderHistoryPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Specific_Stock_History.objects.all()
     serializer_class = Specific_Stock_HistorySerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Specific_Stock_History.objects.filter(user=user)
+
 
 class TotalStockOrderHistoryGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = TotalStockHistory.objects.all()
     serializer_class = TotalStockHistorySerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return TotalStockHistory.objects.filter(user=user)
+
 
 class TotalStockOrderHistoryPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = TotalStockHistory.objects.all()
     serializer_class = TotalStockHistorySerializer
 
-#User SignUp
+    def get_queryset(self):
+        user = self.request.user
+        return TotalStockHistory.objects.filter(user=user)
+
+# User SignUp
+
+
 class CreateUser(APIView):
     permission_classes = [AllowAny]
 
@@ -131,33 +197,52 @@ class BlacklistTokenUpdateView(APIView):
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 class OrderFormGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = OrderForm.objects.all()
     serializer_class = OrderFormSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        accounts = Account.objects.filter(user=user)
+        return OrderForm.objects.filter(account = accounts)
+
 
 class OrderFormPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = OrderForm.objects.all()
     serializer_class = OrderFormSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        accounts = Account.objects.filter(user=user)
+        return OrderForm.objects.filter(account = accounts)
+
 
 class DividendGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = Dividend.objects.all()
     serializer_class = DividendSerializer
 
+
 class DividendPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = Dividend.objects.all()
     serializer_class = DividendSerializer
 
+
 class AccountGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Account.objects.all()
     serializer_class = AccountSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Account.objects.filter(user=user)
+
 
 class AccountPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Account.objects.all()
     serializer_class = AccountSerializer
 
+    def get_queryset(self):
+        user = self.request.user
+        return Account.objects.filter(user=user)

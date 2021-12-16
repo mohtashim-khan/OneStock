@@ -2,16 +2,24 @@
 import NavBar from '../components/Navbar';
 import "../css/StockOrderHistory.css"
 import React, { useEffect,useState } from 'react';
+import axiosInstance from '../axios';
+
 
 const StockOrderHistory = () => {
     
     const [entrys,setentrys] = useState(null);
-    const query = '?userID=1';
     useEffect(() => {
-        // GET request using fetch inside useEffect React hook
-        fetch('http://localhost:8000/api/StockOrdersGetPost/?format=json')
-            .then(response => response.json())
-            .then(data => setentrys(data));
+        
+        axiosInstance
+            .get(`StockOrdersGetPost/`)
+            .then(response => {
+                setentrys(response.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            }
+
+            );
     
     // empty dependency array means this effect will only run once (like componentDidMount in classes)
     }, []);

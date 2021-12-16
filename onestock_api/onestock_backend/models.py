@@ -73,6 +73,7 @@ class OrderForm(models.Model):
     dateRequested = models.DateField(max_length = 100)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
 
+
     def __str__(self) -> str:
         return str(self.id)
 
@@ -83,6 +84,7 @@ class Order(models.Model):
     purchaseTime = models.DateTimeField(max_length = 100)
     orderReqID = models.ForeignKey(OrderForm, on_delete=models.CASCADE)
     
+    
     def __str__(self) -> str:
         return str(self.id)
 
@@ -92,9 +94,9 @@ class TotalStockHistory(models.Model):
     quantityOfTrades = models.BigIntegerField()
     netValue = models.BigIntegerField()
     user = models.ForeignKey(User, on_delete=CASCADE)
-
+    
     def __str__(self) -> str:
-        return str(self.user)+": "+self.id
+        return str(self.user)+": "+str(self.id)
 
 class Specific_Stock_History(models.Model):
     ticker = models.CharField(max_length=100, unique = True)
@@ -104,7 +106,6 @@ class Specific_Stock_History(models.Model):
     amountShares = models.IntegerField()
     currentValue = models.IntegerField()
     stockHistoryID = models.ForeignKey(TotalStockHistory, on_delete=models.CASCADE, null=True, blank = True)
-    user = models.ForeignKey(User, on_delete = models.CASCADE)
 
     def __str__(self) -> str:
         return str(self.user)+": "+self.ticker
