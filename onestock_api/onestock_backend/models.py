@@ -95,10 +95,10 @@ class Order(models.Model):
         return str(self.id)
 
 class TotalStockHistory(models.Model):
-    uniqueTickers = models.BigIntegerField()
-    totalInvested = models.FloatField()
-    quantityOfTrades = models.FloatField()
-    netValue = models.FloatField()
+    uniqueTickers = models.BigIntegerField(default=0)
+    totalInvested = models.FloatField(default = 0)
+    quantityOfTrades = models.FloatField(default= 0)
+    netProfit = models.FloatField(default= 0)
     user = models.ForeignKey(User, on_delete=CASCADE)
     
     def __str__(self) -> str:
@@ -107,10 +107,11 @@ class TotalStockHistory(models.Model):
 class Specific_Stock_History(models.Model):
     ticker = models.CharField(max_length=100, unique = True)
     industry = models.CharField(max_length = 100)
-    netProfit = models.FloatField()
+    netProfit = models.FloatField(default = 0)
     exchange = models.CharField(max_length = 100)
-    amountShares = models.FloatField()
-    currentValue = models.FloatField()
+    amountInvested = models.FloatField(default= 0)
+    currentHoldingAvgValue = models.FloatField()
+    sharesOwned = models.BigIntegerField()
     stockHistoryID = models.ForeignKey(TotalStockHistory, on_delete=models.CASCADE, null=True, blank = True)
 
     def __str__(self) -> str:

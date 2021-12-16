@@ -1,4 +1,5 @@
 from django.db.models.query import QuerySet
+from django.views import generic
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -244,3 +245,11 @@ class AccountPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         user = self.request.user
         return Account.objects.filter(user=user)
+
+class GetLargestGains(generic.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = Specific_Stock_HistorySerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Specific_Stock_History()
