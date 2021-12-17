@@ -9,12 +9,10 @@ const CreateOrder = () => {
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
     const [date, setDate] = useState('');
-    const [account, setAccount] = useState('TFSA');
-    const [brokerage, setBrokerage] = useState('WealthSimple');
-    const [buyOrSell, setbuyOrSell] = useState('BUY');
-    const [specificStockOrderHistory, setSpecificStockOrderHistory] = useState(null);
-    const [totalStockHistory, setTotalStockHistory] = useState(null);
-    const [brokers, setBrokers] = useState(null);
+    const [account, setAccount] = useState(null);
+    const [buyOrSell, setbuyOrSell] = useState('B');
+    const [accounts, setAccounts] = useState(null);
+
     let userinfo = null;
 
     userinfo = parseJwt(localStorage.getItem('access_token'));
@@ -29,19 +27,19 @@ const CreateOrder = () => {
 
     useEffect(() => {
         axiosInstance
-        .get('BrokeragesGetPost/')
+            .get('AccountGetPost/')
             .then(response => {
-                setBrokers(response.data)
+                setAccounts(response.data)
             })
             .catch((err) => {
                 console.log(err)
                 alert("permission denied");
             }
-            
+
 
             );
-    
-    // empty dependency array means this effect will only run once (like componentDidMount in classes)
+
+        // empty dependency array means this effect will only run once (like componentDidMount in classes)
     }, []);
 
 
@@ -54,8 +52,17 @@ const CreateOrder = () => {
             quantity,
             date,
             account,
-            brokerage,
             buyOrSell
+        }
+
+
+
+        let brokerage = null;
+        for (var i = 0; i < accounts.length; i++) {
+            if (accounts[i].id == account) {
+                brokerage = accounts[i].brokerage;
+                break;
+            }
         }
 
 
@@ -66,7 +73,9 @@ const CreateOrder = () => {
                 dateRequested: OrderInfo.date,
                 account: OrderInfo.account,
             })
-            .then(
+            .then((res) => {
+
+
 
                 axiosInstance
                     .post('StockOrdersGetPost/', {
@@ -76,125 +85,197 @@ const CreateOrder = () => {
                         quantity: OrderInfo.quantity,
                         purchaseTime: OrderInfo.date,
                         account: OrderInfo.account,
-                        brokerage: OrderInfo.brokerage,
+                        brokerage: brokerage,
                         buysell: OrderInfo.buyOrSell,
-
+                        orderReqID: res.data.id
 
                     })
                     .catch((err) => {
                         alert("Error in Orders");
                     }
                     )
+            }
             )
             .catch((err) => {
                 alert("Problem with OrderForm");
             }
             );
 
+
         axiosInstance
             .get('SpecificStockOrderHistoryGetPost/')
-            .then(response => {
-                setSpecificStockOrderHistory(response.data)
+            .then(specificStockHistory => {
+
+
+                axiosInstance
+                    .get('TotalStockOrderHistoryGetPost/')
+                    .then(totalStockHistory => {
+
+                        if (specificStockHistory.data == null || specificStockHistory.data.length == 0) {
+                            console.log("ASK FOR PROMPTS");
+                            let exchange = prompt("Please Specify Which Exchange This Stock Belongs To: ");
+                            let industry = prompt("Please Specify Which Industry This Stock Belongs To: ");
+
+                            axiosInstance
+                                .post('SpecificStockOrderHistoryGetPost/', {
+                                    ticker: OrderInfo.ticker,
+                                    industry: industry,
+                                    netProfit: 0,
+                                    exchange: exchange,
+                                    amountInvested: 0,
+                                    currentHoldingAvgValue: 0,
+                                    sharesOwned: 0,
+                                    stockHistoryID: totalStockHistory.data[0].id,
+                                })
+                                .then(specificStockHistory2 => {
+                                    console.log(totalStockHistory.data[0].id);
+                                    console.log(specificStockHistory2.data);
+                                    if (OrderInfo.buyOrSell == "SELL") {
+
+                                        let gainPerShare = OrderInfo.price - specificStockHistory2.data.currentHoldingAvgValue;
+                                        let net_gain = gainPerShare * quantity;
+                                        specificStockHistory2.data.netProfit += net_gain;
+                                        specificStockHistory2.data.sharesOwned -= quantity;
+                                        totalStockHistory.data[0].quantityOfTrades++;
+                                        totalStockHistory.data[0].netProfit += net_gain;
+                                    }
+        
+                                    else {
+        
+                                        let net = price * quantity;
+                                        specificStockHistory2.data.amountInvested += net
+                                        let avgValue = specificStockHistory2.data.currentHoldingAvgValue;
+                                        let sharesOwned = specificStockHistory2.data.sharesOwned;
+                                        specificStockHistory2.data.currentHoldingAvgValue = ((avgValue * sharesOwned) + net) / (sharesOwned + quantity);
+                                        specificStockHistory2.data.sharesOwned += quantity;
+                                        totalStockHistory.data[0].totalInvested += net;
+                                    }
+        
+        
+        
+                                    let specificStockEndPoint = "SpecificStockOrderHistoryPutPatchDelete/" + specificStockHistory2.data.id + "/";
+                                    console.log(totalStockHistory.data[0].id);
+                                    let totalStockHistoryEndPoint = "TotalStockOrderHistoryPutPatchDelete/" + totalStockHistory.data[0].id + "/";
+        
+                                    axiosInstance
+                                        .put(specificStockEndPoint, {
+                                            ticker: specificStockHistory2.data.ticker,
+                                            industry: specificStockHistory2.data.industry,
+                                            netProfit: specificStockHistory2.data.netProfit,
+                                            exchange: specificStockHistory2.data.exchange,
+                                            amountInvested: specificStockHistory2.data.amountInvested,
+                                            currentHoldingAvgValue: specificStockHistory2.data.currentHoldingAvgValue,
+                                            sharesOwned: specificStockHistory2.data.sharesOwned,
+                                            stockHistoryID: totalStockHistory.data[0].id,
+                                        })
+                                        .then()
+                                        .catch((err) => {
+                                            alert("Error Creating SpecificStockOrderHistoryPut");
+                                        });
+        
+                                    axiosInstance
+                                        .patch(totalStockHistoryEndPoint, {
+                                            quantityOfTrades: totalStockHistory.data[0].quantityOfTrades,
+                                            netProfit: totalStockHistory.data[0].netProfit,
+                                            totalInvested: totalStockHistory.data[0].totalInvested,
+                                        })
+                                        .catch((err) => {
+                                            alert("Error Creating TotalStockHistory Patch");
+                                        });
+        
+
+                                })
+                                .catch((err) => {
+
+                                    if (OrderInfo.buyOrSell == "SELL") {
+
+                                        let gainPerShare = OrderInfo.price - specificStockHistory.data.currentHoldingAvgValue;
+                                        let net_gain = gainPerShare * quantity;
+                                        specificStockHistory.data.netProfit += net_gain;
+                                        specificStockHistory.data.sharesOwned -= quantity;
+                                        totalStockHistory.data[0].quantityOfTrades++;
+                                        totalStockHistory.data[0].netProfit += net_gain;
+                                    }
+        
+                                    else {
+        
+                                        let net = price * quantity;
+                                        specificStockHistory.data.amountInvested += net
+                                        let avgValue = specificStockHistory.data.currentHoldingAvgValue;
+                                        let sharesOwned = specificStockHistory.data.sharesOwned;
+                                        specificStockHistory.data.currentHoldingAvgValue = ((avgValue * sharesOwned) + net) / (sharesOwned + quantity);
+                                        specificStockHistory.data.sharesOwned += quantity;
+                                        totalStockHistory.data[0].totalInvested += net;
+                                    }
+        
+        
+        
+                                    let specificStockEndPoint = "SpecificStockOrderHistoryPutPatchDelete/" + specificStockHistory.data.id + "/";
+                                    let totalStockHistoryEndPoint = "TotalStockOrderHistoryPutPatchDelete/" + totalStockHistory.data[0].id + "/";
+        
+                                    axiosInstance
+                                        .put(specificStockEndPoint, {
+                                            ticker: specificStockHistory.data.ticker,
+                                            industry: specificStockHistory.data.industry,
+                                            netProfit: specificStockHistory.data.netProfit,
+                                            exchange: specificStockHistory.data.exchange,
+                                            amountInvested: specificStockHistory.data.amountInvested,
+                                            currentHoldingAvgValue: specificStockHistory.data.currentHoldingAvgValue,
+                                            sharesOwned: specificStockHistory.data.sharesOwned,
+                                            stockHistoryID: totalStockHistory.data[0].id,
+                                        })
+                                        .then()
+                                        .catch((err) => {
+                                            alert("Error Creating SpecificStockOrderHistoryPut");
+                                        });
+        
+                                    axiosInstance
+                                        .patch(totalStockHistoryEndPoint, {
+                                            quantityOfTrades: totalStockHistory.data[0].quantityOfTrades,
+                                            netProfit: totalStockHistory.data[0].netProfit,
+                                            totalInvested: totalStockHistory.data[0].totalInvested,
+                                        })
+                                        .catch((err) => {
+                                            alert("Error Creating TotalStockHistory Patch");
+                                        });
+        
+
+                                });
+
+                            totalStockHistory.data[0].uniqueTickers++;
+
+
+                            
+
+                        }
+
+
+
+
+
+
+
+
+                    })
+                    .catch((err) => {
+                        alert("Error Getting Total Stock history");
+                    }
+                    );
+
+
+
             })
             .catch((err) => {
                 alert("ERROR GETTING SPECFIC STOCK");
             }
             );
 
-        axiosInstance
-            .get('TotalStockOrderHistoryGetPost/')
-            .then(response => {
-                setTotalStockHistory(response.data)
-            })
-            .catch((err) => {
-                alert("Error Getting Total Stock history");
-            }
-            );
-
-        if (specificStockOrderHistory.length == 0) {
-            let exchange = prompt("Please Specify Which Exchange This Stock Belongs To: ");
-            let industry = prompt("Please Specify Which Industry This Stock Belongs To: ")
-
-            axiosInstance
-                .post('SpecificStockOrderHistoryGetPost/', {
-                    ticker: OrderInfo.ticker,
-                    industry: industry,
-                    netProfit: 0,
-                    exchange: exchange,
-                    amountInvested: 0,
-                    currentHoldingAvgValue: 0,
-                    sharesOwned: 0,
-                    stockHistoryID: totalStockHistory.id,
-                })
-                .catch((err) => {
-                    alert("Error Creating SpecificStockOrderHistory");
-                });
-
-            setSpecificStockOrderHistory({
-                ticker: OrderInfo.ticker,
-                industry: industry,
-                netProfit: 0,
-                exchange: exchange,
-                amountInvested: 0,
-                currentHoldingAvgValue: 0,
-                sharesOwned: 0,
-                stockHistoryID: totalStockHistory.id
-            });
 
 
-            totalStockHistory.uniqueTickers++;
-
-        }
-
-        if (OrderInfo.buyOrSell == "SELL") {
-
-            let gainPerShare = OrderInfo.price - specificStockOrderHistory.currentHoldingAvgValue;
-            let net_gain = gainPerShare * quantity;
-            specificStockOrderHistory.netProfit += net_gain;
-            specificStockOrderHistory.sharesOwned -= quantity;
-            totalStockHistory.quantityOfTrades++;
-            totalStockHistory.netProfit += net_gain;
-        }
-
-        else {
-
-            let net = price * quantity;
-            specificStockOrderHistory.amountInvested += net
-            let avgValue = specificStockOrderHistory.currentHoldingAvgValue;
-            let sharesOwned = specificStockOrderHistory.sharesOwned;
-            specificStockOrderHistory.currentHoldingAvgValue = ((avgValue * sharesOwned) + net) / (sharesOwned + quantity);
-            specificStockOrderHistory.sharesOwned += quantity;
-            totalStockHistory.totalInvested += net;
-        }
 
 
-        let specificStockEndPoint = "SpecificStockOrderHistoryPutPatchDelete/" + specificStockOrderHistory.id + "/";
-        let totalStockHistoryEndPoint = "TotalStockOrderHistoryPutPatchDelete/" + totalStockHistory.id + "/";
 
-        axiosInstance
-            .put(specificStockEndPoint, {
-                ticker: specificStockOrderHistory,ticker,
-                industry: specificStockOrderHistory.industry,
-                netProfit: specificStockOrderHistory.netProfit,
-                exchange: specificStockOrderHistory.exchange,
-                amountInvested: specificStockOrderHistory.amountInvested,
-                currentHoldingAvgValue: specificStockOrderHistory.currentHoldingAvgValue,
-                sharesOwned: specificStockOrderHistory.sharesOwned,
-                stockHistoryID: totalStockHistory.id,
-            })
-            .catch((err) => {
-                alert("Error Creating SpecificStockOrderHistoryPut");
-            });
 
-        axiosInstance
-            .patch(totalStockHistoryEndPoint, {
-                quantityOfTrades : totalStockHistory.quantityOfTrades,
-                netProfit : totalStockHistory.netProfit,
-                totalInvested : totalStockHistory.totalInvested,
-            })
-            .catch((err) => {
-                alert("Error Creating TotalStockHistory Patch");
-            });
 
 
 
@@ -239,26 +320,15 @@ const CreateOrder = () => {
                         required
                         value={account}
                         onChange={(e) => setAccount(e.target.value)}>
-                        <option value="TFSA">TFSA</option>
-                        <option value="RRSP">RRSP</option>
-                        <option value="Non-Registered">Non-Registered</option>
-                    </select>
-
-                    <label>Brokerage </label>
-                    <select
-                        required
-                        value={brokerage}
-                        onChange={(e) => setBrokerage(e.target.value)}>
-                    
-                        {brokers&&
-                            brokers.map((broker) => (
-                                <option value={broker.name}>{broker.name}</option>    
-                        ))
+                        {accounts &&
+                            accounts.map((singleaccount) => (
+                                <option value={singleaccount.id}>{singleaccount.accountType}</option>
+                            ))
                         }
-                        {!brokers ?(
-                            <option value="No existing broker">No existsing Brokers, Use Add Brokerage Below</option>  
-                            ):
-                            (<option value="null">Add Additional Brokers Using Add Brokerage Below</option>
+                        {!accounts ? (
+                            <option value="No existing account">Please Select Account</option>
+                        ) :
+                            (<option value="null">Please Select Account</option>
                             )
                         }
                     </select>
@@ -268,8 +338,8 @@ const CreateOrder = () => {
                         required
                         value={buyOrSell}
                         onChange={(e) => setbuyOrSell(e.target.value)}>
-                        <option value="BUY">BUY</option>
-                        <option value="SELL">SELL</option>
+                        <option value="B">BUY</option>
+                        <option value="S">SELL</option>
                     </select>
 
 
@@ -278,9 +348,9 @@ const CreateOrder = () => {
 
                 <button onClick={(e) => {
                     e.preventDefault();
-                    window.location.href = "/AddBrokerage";
+                    window.location.href = "/AddAccount";
                 }
-                }>Add New Brokerage</button>
+                }>Add New Account</button>
 
 
             </div>

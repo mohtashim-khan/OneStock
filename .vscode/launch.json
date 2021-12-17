@@ -4,15 +4,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
-            "name": "Python: Django",
+            "name": "Launch Firefox against localhost",
             "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/onestock_api/manage.py",
-            "args": [
-                "runserver"
-            ],
-            "django": true
+            "url": "http://localhost:3000/",
+            "webRoot": "${workspaceFolder}/frontend",
+            
         }
     ]
 }

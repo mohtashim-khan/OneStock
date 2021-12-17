@@ -3,15 +3,19 @@ import { useState, useEffect } from "react"
 import NavBar from '../components/Navbar';
 import "../css/AddBrokerage.css"
 import axiosInstance from '../axios';
+import { useNavigate } from 'react-router-dom';
 
 const AddAccount = () => {
 
     const [accountType, setType] = useState('TFSA');
+    const navigate = useNavigate();
 
 
 
     const [brokers, setBrokers] = useState(null);
     const [brokerage, setBrokerage] = useState(null);
+    const [brokerageName, setBrokerageName] = useState(null);
+
     let userinfo = null;
     userinfo = parseJwt(localStorage.getItem('access_token'));
 
@@ -44,13 +48,28 @@ const AddAccount = () => {
         const accountInfo = {
             accountType
         }
+
+        let name = null;
+
+        for (var i = 0; i < brokers.length; i++) {
+            if (brokers[i].id == brokerage) {
+                name = brokers[i].name;
+                break;
+            }
+        }
+
         axiosInstance
             .post('AccountGetPost/', {
                 user: userinfo.user_id,
-                accountType: accountInfo.accountType,
+                accountType: accountInfo.accountType + "-" + name,
                 brokerage: brokerage,
 
-            })
+            }).then((res) => {
+                alert("ACCOUNT ADDED!");
+                navigate("/StockOrderHistory");
+            }
+            )
+
             .catch((err) => {
                 alert("Error");
             }
@@ -80,23 +99,31 @@ const AddAccount = () => {
                     <select
                         required
                         value={brokerage}
-                        onChange={(e) => setBrokerage(e.target.value)}>
+                        onChange={(e) =>
+                            setBrokerage(e.target.value)
+                        }>
 
                         {brokers &&
                             brokers.map((broker) => (
-                                <option value={broker.name}>{broker.name}</option>
+                                <option value={broker.id}>{broker.name}</option>
                             ))
                         }
                         {!brokers ? (
-                            <option value="No existing broker">No existsing Brokers, Use Add Brokerage Below</option>
+                            <option value="No existing broker">Please Choose A Valid Brokerage, Else Add Brokerages</option>
                         ) :
-                            (<option value="null">Add Additional Brokers Using Add Brokerage Below</option>
+                            (<option value="null"></option>
                             )
                         }
                     </select>
 
                     <button>Add Account</button>
                 </form>
+
+                <button onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = "/AddBrokerage";
+                }
+                }>Add New Brokerage</button>
 
 
             </div>
