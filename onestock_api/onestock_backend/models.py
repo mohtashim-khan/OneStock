@@ -61,7 +61,6 @@ class Brokerage(models.Model):
         return self.name
     
 class Account(models.Model):
-    accountValue = models.FloatField()
     accountType = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     brokerage = ForeignKey(Brokerage, on_delete=models.CASCADE)
@@ -110,8 +109,8 @@ class Specific_Stock_History(models.Model):
     netProfit = models.FloatField(default = 0)
     exchange = models.CharField(max_length = 100)
     amountInvested = models.FloatField(default= 0)
-    currentHoldingAvgValue = models.FloatField()
-    sharesOwned = models.BigIntegerField()
+    currentHoldingAvgValue = models.FloatField(default = 0)
+    sharesOwned = models.BigIntegerField(default= 0)
     stockHistoryID = models.ForeignKey(TotalStockHistory, on_delete=models.CASCADE, null=True, blank = True)
 
     def __str__(self) -> str:

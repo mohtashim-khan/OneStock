@@ -12,6 +12,8 @@ const CreateOrder = () => {
     const [account, setAccount] = useState('TFSA');
     const [brokerage, setBrokerage] = useState('WealthSimple');
     const [buyOrSell, setbuyOrSell] = useState('BUY');
+    const [specificStockOrderHistory, setSpecificStockOrderHistory] = useState(null);
+    const [totalStockHistory, setTotalStockHistory] = useState(null);
     let userinfo = null;
 
     userinfo = parseJwt(localStorage.getItem('access_token'));
@@ -33,24 +35,150 @@ const CreateOrder = () => {
             brokerage,
             buyOrSell
         }
-    
+
+
         axiosInstance
-        .post('StockOrdersGetPost/', {
-            user: userinfo.user_id,
-            ticker: OrderInfo.ticker,
-            purchasePrice: OrderInfo.price,
-            quantity: OrderInfo.quantity,
-            purchaseTime: OrderInfo.date,
-            account: OrderInfo.account,
-            brokerage: OrderInfo.brokerage,
-            buysell: OrderInfo.buyOrSell,
-        
-            
-        })
-        .catch((err) => {
-            alert("Error");
+            .post('OrderFormGetPost/', {
+                typeofFile: "Custom Order",
+                numOfOrders: 1,
+                dateRequested: OrderInfo.date,
+                account: OrderInfo.account,
+            })
+            .then(
+
+                axiosInstance
+                    .post('StockOrdersGetPost/', {
+                        user: userinfo.user_id,
+                        ticker: OrderInfo.ticker,
+                        purchasePrice: OrderInfo.price,
+                        quantity: OrderInfo.quantity,
+                        purchaseTime: OrderInfo.date,
+                        account: OrderInfo.account,
+                        brokerage: OrderInfo.brokerage,
+                        buysell: OrderInfo.buyOrSell,
+
+
+                    })
+                    .catch((err) => {
+                        alert("Error in Orders");
+                    }
+                    )
+            )
+            .catch((err) => {
+                alert("Problem with OrderForm");
+            }
+            );
+
+        axiosInstance
+            .get('SpecificStockOrderHistoryGetPost/')
+            .then(response => {
+                setSpecificStockOrderHistory(response.data)
+            })
+            .catch((err) => {
+                alert("ERROR GETTING SPECFIC STOCK");
+            }
+            );
+
+        axiosInstance
+            .get('TotalStockOrderHistoryGetPost/')
+            .then(response => {
+                setTotalStockHistory(response.data)
+            })
+            .catch((err) => {
+                alert("Error Getting Total Stock history");
+            }
+            );
+
+        if (specificStockOrderHistory.length == 0) {
+            let exchange = prompt("Please Specify Which Exchange This Stock Belongs To: ");
+            let industry = prompt("Please Specify Which Industry This Stock Belongs To: ")
+
+            axiosInstance
+                .post('SpecificStockOrderHistoryGetPost/', {
+                    ticker: OrderInfo.ticker,
+                    industry: industry,
+                    netProfit: 0,
+                    exchange: exchange,
+                    amountInvested: 0,
+                    currentHoldingAvgValue: 0,
+                    sharesOwned: 0,
+                    stockHistoryID: totalStockHistory.id,
+                })
+                .catch((err) => {
+                    alert("Error Creating SpecificStockOrderHistory");
+                });
+
+            setSpecificStockOrderHistory({
+                ticker: OrderInfo.ticker,
+                industry: industry,
+                netProfit: 0,
+                exchange: exchange,
+                amountInvested: 0,
+                currentHoldingAvgValue: 0,
+                sharesOwned: 0,
+                stockHistoryID: totalStockHistory.id
+            });
+
+
+            totalStockHistory.uniqueTickers++;
+
         }
-        );
+
+        if (OrderInfo.buyOrSell == "SELL") {
+
+            let gainPerShare = OrderInfo.price - specificStockOrderHistory.currentHoldingAvgValue;
+            let net_gain = gainPerShare * quantity;
+            specificStockOrderHistory.netProfit += net_gain;
+            specificStockOrderHistory.sharesOwned -= quantity;
+            totalStockHistory.quantityOfTrades++;
+            totalStockHistory.netProfit += net_gain;
+        }
+
+        else {
+
+            let net = price * quantity;
+            specificStockOrderHistory.amountInvested += net
+            let avgValue = specificStockOrderHistory.currentHoldingAvgValue;
+            let sharesOwned = specificStockOrderHistory.sharesOwned;
+            specificStockOrderHistory.currentHoldingAvgValue = ((avgValue * sharesOwned) + net) / (sharesOwned + quantity);
+            specificStockOrderHistory.sharesOwned += quantity;
+            totalStockHistory.totalInvested += net;
+        }
+
+
+        let specificStockEndPoint = "SpecificStockOrderHistoryPutPatchDelete/" + specificStockOrderHistory.id + "/";
+        let totalStockHistoryEndPoint = "TotalStockOrderHistoryPutPatchDelete/" + totalStockHistory.id + "/";
+
+        axiosInstance
+            .put(specificStockEndPoint, {
+                ticker: specificStockOrderHistory,ticker,
+                industry: specificStockOrderHistory.industry,
+                netProfit: specificStockOrderHistory.netProfit,
+                exchange: specificStockOrderHistory.exchange,
+                amountInvested: specificStockOrderHistory.amountInvested,
+                currentHoldingAvgValue: specificStockOrderHistory.currentHoldingAvgValue,
+                sharesOwned: specificStockOrderHistory.sharesOwned,
+                stockHistoryID: totalStockHistory.id,
+            })
+            .catch((err) => {
+                alert("Error Creating SpecificStockOrderHistoryPut");
+            });
+
+        axiosInstance
+            .patch(totalStockHistoryEndPoint, {
+                quantityOfTrades : totalStockHistory.quantityOfTrades,
+                netProfit : totalStockHistory.netProfit,
+                totalInvested : totalStockHistory.totalInvested,
+            })
+            .catch((err) => {
+                alert("Error Creating TotalStockHistory Patch");
+            });
+
+
+
+
+
+
     }
 
     return (
