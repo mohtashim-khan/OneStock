@@ -46,9 +46,10 @@ const StockOrderHistory = () => {
                    
                     <ButtonGroup 
                         style={{
-                            fontSize:12
+                            fontSize:12,
                             
                         }}
+                        
                         variant = "contained" 
                         color = "primary">
                         <Button>Import From PC</Button>

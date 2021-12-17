@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import NavBar from '../components/Navbar';
 import "../css/AddBrokerage.css"
 import axiosInstance from '../axios';
+import { useNavigate } from 'react-router-dom';
 
 const AddAccount = () => {
 
@@ -13,6 +14,7 @@ const AddAccount = () => {
     const [brokers, setBrokers] = useState(null);
     const [brokerage, setBrokerage] = useState(null);
     let userinfo = null;
+    const navigate = useNavigate();
     userinfo = parseJwt(localStorage.getItem('access_token'));
 
     function parseJwt(token) {

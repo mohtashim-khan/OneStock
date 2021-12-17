@@ -6,6 +6,7 @@ import axiosInstance from '../axios';
 import { useNavigate } from 'react-router-dom';
 
 
+
 const AddBrokerage = () => {
 
     const [name, setName] = useState('');
@@ -43,6 +44,7 @@ const AddBrokerage = () => {
             alert("Error");
         }
         );
+      
     
     }
 
