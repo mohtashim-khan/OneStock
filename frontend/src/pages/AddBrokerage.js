@@ -3,12 +3,18 @@ import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/AddBrokerage.css"
 import axiosInstance from '../axios';
+import { useNavigate } from 'react-router-dom';
+
+
 const AddBrokerage = () => {
 
     const [name, setName] = useState('');
     const [fees, setFees] = useState('');
     const [perOrderFees, setperOrderFees] = useState('');
     const [currencyConversionRate, setcurrencyConverstionRate] = useState('');
+    const[output, setoutput] = useState('');
+    const navigate = useNavigate();
+
 
 
 
@@ -28,6 +34,11 @@ const AddBrokerage = () => {
             currencyConversionRate: brokerageInfo.currencyConversionRate,
 
         })
+        .then((res)=>{
+            alert("BROKERAGE ADDED!");
+            navigate("/StockOrderHistory");
+        }
+        )
         .catch((err) => {
             alert("Error");
         }
