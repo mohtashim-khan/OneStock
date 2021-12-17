@@ -3,7 +3,8 @@ import NavBar from '../components/Navbar';
 import "../css/StockOrderHistory.css"
 import React, { useEffect,useState } from 'react';
 import axiosInstance from '../axios';
-
+import Button from '@material-ui/core/Button'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
 const StockOrderHistory = () => {
     
     const [entrys,setentrys] = useState(null);
@@ -43,12 +44,24 @@ const StockOrderHistory = () => {
             
             <div className="StockOrderHistory">
                 <div className="buttonsContainer">
-                    <button>Import From PC</button>
+                   
+                    <ButtonGroup 
+                        style={{
+                            fontSize:12
+                            
+                        }}
+                        variant = "contained" 
+                        color = "primary">
+                        <Button>Import From PC</Button>
+                        <Button 
+                            href="/CreateOrder" 
+                            >Create Custom Order
+                        </Button>
 
-                    <button onClick={(e) => {window.location.href="/CreateOrder";}}>Create Custom Order</button>
-                    
-                    <button onClick={(e) => {window.location.href="/ModifyOrder";}}>Modify Order By ID</button>
-                    <button onClick={(e) => {window.location.href="/AddBrokerage";}}>Add Brokerage</button>
+                        <Button  href="/ModifyOrder" >Modify Order By ID</Button>
+                        <Button  href="/AddBrokerage" >Add Brokerage</Button>
+                        <Button  href="/AddAccount" >Add Account</Button>
+                    </ButtonGroup>
                   
                 </div>
                 

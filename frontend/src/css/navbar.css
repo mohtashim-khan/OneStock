@@ -20,12 +20,7 @@
   padding: 6px;
   color: Black;
 }
-.navbar b{
-  margin-left: 16px;
-  text-decoration: none;
-  padding: 6px;
-  color: rgb(228, 210, 210);
-}
+
 .navbar b:hover{
   cursor: pointer;
   color: white;

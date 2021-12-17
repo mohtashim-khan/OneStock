@@ -18,6 +18,7 @@ import CreateBondOrder from './pages/CreateBondOrder';
 import StockOrderHistory from './pages/StockOrderHistory';
 import SpecificStockHistory from './pages/SpecificStockHistory'
 import OtherAssetHistory from './pages/OtherAssetHistory'
+import AddAccount from './pages/AddAccount'
 import Home from './pages/Home'
 import {Route, Routes, BrowserRouter as Router} from 'react-router-dom';
 //npm update might be needed
@@ -32,6 +33,7 @@ function App() {
         <Routes>
           <Route path="/Home" element = {<Home />} />
           <Route path="/AddBrokerage" element = {<AddBrokerage />} /> 
+          <Route path="/AddAccount" element = {<AddAccount />} />
 
           <Route path="/CreateOrder" element = {<CreateOrder />} />
           <Route path="/ModifyOrder" element = {<ModifyOrder />} />

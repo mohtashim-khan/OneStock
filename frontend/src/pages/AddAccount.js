@@ -5,27 +5,29 @@ import "../css/AddBrokerage.css"
 import axiosInstance from '../axios';
 const AddAccount = () => {
 
-    const [name, setName] = useState('');
-    const [fees, setFees] = useState('');
-    const [perOrderFees, setperOrderFees] = useState('');
-    const [currencyConversionRate, setcurrencyConverstionRate] = useState('');
+    const [accountType, setType] = useState('');
+    
 
 
+    let userinfo = null;
+    userinfo = parseJwt(localStorage.getItem('access_token'));
 
+    function parseJwt(token) {
+        if (!token) { return; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
     const handleSubmit = (e) => {
         e.preventDefault()
-        const brokerageInfo = {
-            name,
-            fees,
-            perOrderFees,
-            currencyConversionRate
+        const accountInfo = {
+            accountType
         }
         axiosInstance
-        .post('BrokeragesGetPost/', {
-            name: brokerageInfo.name,
-            fees: brokerageInfo.fees,
-            perOrderFees: brokerageInfo.perOrderFees,
-            currencyConversionRate: brokerageInfo.currencyConversionRate,
+        .post('AccountGetPost/', {
+            user: userinfo.user_id,
+            accountValue: 0,
+            accountType: accountInfo.accountType,
 
         })
         .catch((err) => {
@@ -39,34 +41,20 @@ const AddAccount = () => {
 
         <div className="content">
             <NavBar/>
-            <div className="AddBrokerage">
-                <h2>Add Brokerage</h2>
+            <div className="AddAccount">
+                <h2>Add Banking Account</h2>
                 <form onSubmit={handleSubmit}>
-                    <label>Name: </label>
-                    <input type="text"
+                    <label>Type: </label>
+                    <select
+                        name = "abcc"
                         required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)} />
-
-                    <label>Fees: </label>
-                    <input type="number"
-                        required
-                        value={fees}
-                        onChange={(e) => setFees(e.target.value)} />
-
-                    <label>Per Order Fees: </label>
-                    <input type="number"
-                        required
-                        value={perOrderFees}
-                        onChange={(e) => setperOrderFees(e.target.value)} />
-
-                    <label>Currency Conversion: </label>
-                    <input type="number"
-                        required
-                        value={currencyConversionRate}
-                        onChange={(e) => setcurrencyConverstionRate(e.target.value)} />
-
-                    <button>Add Brokerage</button>
+                        value={accountType}
+                        onChange={(e) => setType(e.target.value)}>
+                        <option value="TFSA">TFSA</option>
+                        <option value="RRSP">RRSP</option>
+                        <option value="Non-Registered">Non-Registered</option>
+                    </select>
+                    <button>Add Account</button>
                 </form>
 
 
@@ -78,4 +66,4 @@ const AddAccount = () => {
     );
 }
 
-export default AddBrokerage;
+export default AddAccount;
