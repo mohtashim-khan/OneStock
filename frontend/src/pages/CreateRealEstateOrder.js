@@ -3,6 +3,7 @@ import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
 import axiosInstance from '../axios';
+import { useNavigate } from 'react-router-dom';
 const CreateRealEstateOrder = () => {
 
     const [valuation, setValuation] = useState('');
@@ -10,6 +11,7 @@ const CreateRealEstateOrder = () => {
     const [location, setLocation] = useState('');
     const [address, setAddress] = useState('');
     let userinfo = null;
+    const navigate = useNavigate();
     userinfo = parseJwt(localStorage.getItem('access_token'));
 
     function parseJwt(token) {
@@ -44,6 +46,7 @@ const CreateRealEstateOrder = () => {
             alert("Error");
         }
         );
+        navigate('/OtherAssetHistory');
     }
 
     return (
