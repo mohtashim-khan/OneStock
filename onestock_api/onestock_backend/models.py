@@ -86,7 +86,7 @@ class Order(models.Model):
     buysell = models.CharField(max_length = 1)
     quantity = models.FloatField()
     purchasePrice = models.FloatField()
-    purchaseTime = models.DateTimeField(max_length = 100)
+    purchaseTime = models.DateField(max_length = 100)
     orderReqID = models.ForeignKey(OrderForm, on_delete=models.CASCADE)
     
     
