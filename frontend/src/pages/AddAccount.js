@@ -17,7 +17,7 @@ const AddAccount = () => {
     const [brokerageName, setBrokerageName] = useState(null);
 
     let userinfo = null;
-    const navigate = useNavigate();
+   
     userinfo = parseJwt(localStorage.getItem('access_token'));
 
     function parseJwt(token) {
