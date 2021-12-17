@@ -32,16 +32,7 @@ const AddBrokerage = () => {
             alert("Error");
         }
         );
-        // fetch('http://localhost:3000/AddBrokerage',
-        //     {
-        //         method: 'POST',
-        //         headers: {
-        //             "Content-Type": "application/json"
-        //         },
-        //         body: JSON.stringify(brokerageInfo)
-        //     }).then(() => {
-        //         console.log(brokerageInfo);
-        //     })
+    
     }
 
     return (

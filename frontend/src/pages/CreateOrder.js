@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
@@ -14,6 +14,7 @@ const CreateOrder = () => {
     const [buyOrSell, setbuyOrSell] = useState('BUY');
     const [specificStockOrderHistory, setSpecificStockOrderHistory] = useState(null);
     const [totalStockHistory, setTotalStockHistory] = useState(null);
+    const [brokers, setBrokers] = useState(null);
     let userinfo = null;
 
     userinfo = parseJwt(localStorage.getItem('access_token'));
@@ -24,6 +25,27 @@ const CreateOrder = () => {
         const base64 = base64Url.replace('-', '+').replace('_', '/');
         return JSON.parse(window.atob(base64));
     }
+
+
+    useEffect(() => {
+        axiosInstance
+        .get('BrokeragesGetPost/')
+            .then(response => {
+                setBrokers(response.data)
+            })
+            .catch((err) => {
+                console.log(err)
+                alert("permission denied");
+            }
+            
+
+            );
+    
+    // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    }, []);
+
+
+
     const handleSubmit = (e) => {
         e.preventDefault()
         const OrderInfo = {
@@ -227,8 +249,18 @@ const CreateOrder = () => {
                         required
                         value={brokerage}
                         onChange={(e) => setBrokerage(e.target.value)}>
-                        <option value="WealthSimple">WealthSimple</option>
-                        <option value="RBC">RBC</option>
+                    
+                        {brokers&&
+                            brokers.map((broker) => (
+                                <option value={broker.name}>{broker.name}</option>    
+                        ))
+                        }
+                        {!brokers ?(
+                            <option value="No existing broker">No existsing Brokers, Use Add Brokerage Below</option>  
+                            ):
+                            (<option value="null">Add Additional Brokers Using Add Brokerage Below</option>
+                            )
+                        }
                     </select>
 
                     <label>BUY/SELL: </label>

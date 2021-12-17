@@ -3,6 +3,15 @@
 import NavBar from '../components/Navbar';
 import React, { useEffect,useState } from 'react';
 import axiosInstance from '../axios';
+import Table from '@material-ui/core/Table'
+import { styled } from '@material-ui/core/styles';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 function OtherAssetHistory(){
     const [entrycryptos,setCrypto] = useState(null);
     const [entrycashs,setCash] = useState(null);
@@ -72,12 +81,13 @@ function OtherAssetHistory(){
     }, []);
     
     return(
-        <>
-            <div>
+        <div>
+            
         
             <NavBar/>
+        
                 <h2>Other Asset Order History</h2>
-                <table val = "6">
+                <Table val = "6">
                     <caption>Crypto Currency</caption>
                     <tr>
                         <th scope="col">AssetID</th>
@@ -98,7 +108,20 @@ function OtherAssetHistory(){
                             </tr>
                         ))
                     }
-                </table>
+                </Table>
+                <TableContainer justify="center" style={{width:"50%"}} >
+                    <Table aria-label="customized table">
+                    <TableHead>
+                    <TableRow>
+                        <TableCell>Dessert (100g serving)</TableCell>
+                        <TableCell align="right">Calories</TableCell>
+                        <TableCell align="right">Fat&nbsp;(g)</TableCell>
+                        <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+                        <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                    </TableRow>
+                    </TableHead>
+                    </Table>
+                </TableContainer>
                 <table val = "7">
                     <caption>Commodities</caption>
                     <tr>
@@ -200,8 +223,8 @@ function OtherAssetHistory(){
                 </group2>
                
                 
-            </div>
-        </>
+            
+        </div>
     );
 }
 
