@@ -148,7 +148,7 @@ class SpecificStockOrderHistoryPutPatchDelete(generics.RetrieveUpdateDestroyAPIV
 
     def get_queryset(self):
         user = self.request.user
-        return Specific_Stock_History.objects.filter(user=user)
+        return Specific_Stock_History.objects.filter(stockHistoryID__in=TotalStockHistory.objects.filter(user=user))
 
 
 class TotalStockOrderHistoryGetPost(generics.ListCreateAPIView):
