@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect,Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
@@ -14,7 +14,38 @@ const ModifyOrder = () => {
     const [brokerage, setBrokerage] = useState("Wealthsimple");
     const [buyOrSell, setbuyOrSell] = useState("BUY");
 
+    const [brokers, setBrokers] = useState(null);
+    const [orders, setOrders] = useState(null);
 
+    useEffect(() => {
+        axiosInstance
+        .get('BrokeragesGetPost/')
+            .then(response => {
+                setBrokers(response.data)
+            })
+            .catch((err) => {
+                console.log(err)
+                alert("permission denied");
+            }
+            
+
+            );
+        axiosInstance
+        .get('StockOrdersGetPost/')
+            .then(response => {
+                setOrders(response.data)
+            })
+            .catch((err) => {
+                console.log(err)
+                alert("permission denied");
+            }
+            
+
+            );
+      
+    
+    // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    }, []);
 
 
 
@@ -56,17 +87,40 @@ const ModifyOrder = () => {
                 <h2>Modify Order</h2>
                 <form onSubmit={handleSubmit}>
                     <label>OrderID: </label>
-                    <input type="number"
+                    <select 
                         required
                         value={orderID}
-                        onChange={(e) => setOrderID(e.target.value)} />
-
+                        onChange={(e) => setOrderID(e.target.value)} >
+                        {orders&&
+                            orders.map((order) => (
+                                <option value={order.id}>{order.id}</option>    
+                        ))
+                        }
+                        {!orders ?(
+                            <option value="null">No existsing Orders, Please Add Orders First</option>  
+                            ):
+                            (<option value="null">No existsing Orders, Please Add Orders First</option>
+                            )
+                        }
+                        
+                    </select>
                     <label>Ticker: </label>
-                    <input type="text"
+                    <select
                         required
                         value={ticker}
-                        onChange={(e) => setTicker(e.target.value)} />
-
+                        onChange={(e) => setTicker(e.target.value)} >
+                        {orders&&
+                            orders.map((order) => (
+                                <option value={order.ticker}>{order.ticker}</option>    
+                        ))
+                        }
+                        {!orders ?(
+                            <option value="null">No existsing Tickers, Please Add Orders First</option>  
+                            ):
+                            (<option value="null">No existsing Tickers, Please Add Orders First</option>
+                            )
+                        }
+                    </select>
                     <label>Price: </label>
                     <input type="number"
                         required
@@ -100,8 +154,17 @@ const ModifyOrder = () => {
                         required
                         value={brokerage}
                         onChange={(e) => setBrokerage(e.target.value)}>
-                        <option value="WealthSimple">WealthSimple</option>
-                        <option value="RBC">RBC</option>
+                       {brokers&&
+                            brokers.map((broker) => (
+                                <option value={broker.name}>{broker.name}</option>    
+                        ))
+                        }
+                        {!brokers ?(
+                            <option>here</option>
+                            ):
+                            (<option>here2</option>
+                            )
+                        }
                     </select>
 
                     <label>BUY/SELL: </label>

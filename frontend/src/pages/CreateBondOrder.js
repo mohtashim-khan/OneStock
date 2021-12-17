@@ -3,6 +3,7 @@ import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
 import axiosInstance from '../axios';
+import { useNavigate } from 'react-router-dom';
 const CreateBondOrder = () => {
 
     const [valuation, setValuation] = useState('');
@@ -11,6 +12,7 @@ const CreateBondOrder = () => {
     const [interest, setInterest] = useState('');
 
     let userinfo = null;
+    const navigate = useNavigate();
     userinfo = parseJwt(localStorage.getItem('access_token'));
 
     function parseJwt(token) {
@@ -40,6 +42,7 @@ const CreateBondOrder = () => {
             alert("Error");
         }
         );
+        navigate('/OtherAssetHistory');
     }
 
     return (
@@ -63,7 +66,7 @@ const CreateBondOrder = () => {
                         onChange={(e) => setFaceValue(e.target.value)} />
 
                     <label>Maturity Date: </label>
-                    <input type="number"
+                    <input type="Date"
                         required
                         value={maturityDate}
                         onChange={(e) => setMaturityDate(e.target.value)} />

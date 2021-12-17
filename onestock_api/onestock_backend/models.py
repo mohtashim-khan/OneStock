@@ -159,7 +159,7 @@ class Bonds(models.Model):
     valuation = models.FloatField()
     interest = models.CharField(max_length = 100)
     principal = models.CharField(max_length = 100)
-    maturityDate = models.FloatField()
+    maturityDate = models.DateField(max_length = 100)
     user = models.ForeignKey(User,on_delete=CASCADE)
 
     def __str__(self) -> str:
