@@ -19,6 +19,7 @@ urlpatterns = [
     path('RealEstatePutPatchDelete/<int:pk>/', views.RealEstatePutPatchDelete.as_view(), name = "RealEstatePutPatchDelete"),
     path('SpecificStockOrderHistoryGetPost/', views.SpecificStockOrderHistoryGetPost.as_view(), name = "SpecificStockOrderHistoryGetPost"),
     path('SpecificStockOrderHistoryPutPatchDelete/<int:pk>/', views.SpecificStockOrderHistoryPutPatchDelete.as_view(), name = "SpecificStockOrderHistoryPutPatchDelete"),
+    path('SpecificStockOrderHistoryPutPatchDeleteByTicker/<str:ticker>/', views.SpecificStockOrderHistoryPutPatchDeleteByTicker.as_view(), name = "SpecificStockOrderHistoryPutPatchDeleteByTicker"),
     path('TotalStockOrderHistoryGetPost/', views.TotalStockOrderHistoryGetPost.as_view(), name = "TotalStockOrderHistoryGetPost"),
     path('TotalStockOrderHistoryPutPatchDelete/<int:pk>/', views.TotalStockOrderHistoryPutPatchDelete.as_view(), name = "TotalStockOrderHistoryPutPatchDelete"),
     path('CreateUser/', views.CreateUser.as_view(), name = "CreateUser"),

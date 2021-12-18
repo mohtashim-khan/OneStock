@@ -12,6 +12,8 @@ const CreateOrder = () => {
     const [account, setAccount] = useState(null);
     const [buyOrSell, setbuyOrSell] = useState('B');
     const [accounts, setAccounts] = useState(null);
+    const [stateSpecfic, setstateSpecific] = useState(null);
+
 
     let userinfo = null;
 
@@ -103,179 +105,65 @@ const CreateOrder = () => {
 
 
         axiosInstance
-            .get('SpecificStockOrderHistoryGetPost/')
+            .get('SpecificStockOrderHistoryPutPatchDeleteByTicker/' + OrderInfo.ticker + '/')
             .then(specificStockHistory => {
 
-
+                console.log("Specific Stock History Already Created");
                 axiosInstance
                     .get('TotalStockOrderHistoryGetPost/')
                     .then(totalStockHistory => {
+                        
+                        if (OrderInfo.buyOrSell == "S") {
 
-                        console.log("GO INTO IF");
-                        console.log(specificStockHistory.data);
-
-                        let index = null;
-                        for (var i = 0; i < specificStockHistory.length; i++) {
-                            if (specificStockHistory[i].data.ticker == OrderInfo.ticker) {
-                                index = i;
-                                break;
-                            }
+                            let gainPerShare = OrderInfo.price - specificStockHistory.data.currentHoldingAvgValue;
+                            let net_gain = gainPerShare * quantity;
+                            specificStockHistory.data.netProfit += parseInt(net_gain);
+                            specificStockHistory.data.sharesOwned -= quantity;
+                            totalStockHistory.data[0].quantityOfTrades++;
+                            totalStockHistory.data[0].netProfit += parseInt(net_gain);
                         }
 
-                        if (index == null || specificStockHistory.data[index] == null || specificStockHistory.data[index].length == 0) {
-                            console.log("ASK FOR PROMPTS");
-                            let exchange = prompt("Please Specify Which Exchange This Stock Belongs To: ");
-                            let industry = prompt("Please Specify Which Industry This Stock Belongs To: ");
-
-                            axiosInstance
-                                .post('SpecificStockOrderHistoryGetPost/', {
-                                    ticker: OrderInfo.ticker,
-                                    industry: industry,
-                                    netProfit: 0,
-                                    exchange: exchange,
-                                    amountInvested: 0,
-                                    currentHoldingAvgValue: 0,
-                                    sharesOwned: 0,
-                                    stockHistoryID: totalStockHistory.data[0].id,
-                                })
-                                .then(specificStockHistoryResponse => {
-                                    console.log(totalStockHistory.data[0].id);
-
-
-                                    console.log(specificStockHistoryResponse.data);
-
-                                    if (OrderInfo.buyOrSell == "S") {
-
-                                        let gainPerShare = OrderInfo.price - specificStockHistoryResponse.data.currentHoldingAvgValue;
-                                        let net_gain = gainPerShare * quantity;
-                                        specificStockHistoryResponse.data.netProfit += net_gain;
-                                        specificStockHistoryResponse.data.sharesOwned -= quantity;
-                                        totalStockHistory.data[0].quantityOfTrades++;
-                                        totalStockHistory.data[0].netProfit += net_gain;
-                                    }
-
-                                    else {
-
-                                        let net = price * quantity;
-                                        specificStockHistoryResponse.data.amountInvested += net
-                                        let avgValue = specificStockHistoryResponse.data.currentHoldingAvgValue;
-                                        let sharesOwned = specificStockHistoryResponse.data.sharesOwned;
-                                        specificStockHistoryResponse.data.currentHoldingAvgValue = ((avgValue * sharesOwned) + net) / (sharesOwned + quantity);
-                                        specificStockHistoryResponse.data.sharesOwned += quantity;
-                                        totalStockHistory.data[0].totalInvested += net;
-                                    }
-
-
-
-                                    let specificStockEndPoint = "SpecificStockOrderHistoryPutPatchDelete/" + specificStockHistoryResponse.data.id + "/";
-                                    console.log(totalStockHistory.data[0].id);
-                                    let totalStockHistoryEndPoint = "TotalStockOrderHistoryPutPatchDelete/" + totalStockHistory.data[0].id + "/";
-
-                                    axiosInstance
-                                        .put(specificStockEndPoint, {
-                                            ticker: specificStockHistoryResponse.data.ticker,
-                                            industry: specificStockHistoryResponse.data.industry,
-                                            netProfit: specificStockHistoryResponse.data.netProfit,
-                                            exchange: specificStockHistoryResponse.data.exchange,
-                                            amountInvested: specificStockHistoryResponse.data.amountInvested,
-                                            currentHoldingAvgValue: specificStockHistoryResponse.data.currentHoldingAvgValue,
-                                            sharesOwned: specificStockHistoryResponse.data.sharesOwned,
-                                            stockHistoryID: totalStockHistory.data[0].id,
-                                        })
-                                        .then()
-                                        .catch((err) => {
-                                            alert("Error Creating SpecificStockOrderHistoryPut");
-                                        });
-
-                                    axiosInstance
-                                        .patch(totalStockHistoryEndPoint, {
-                                            quantityOfTrades: totalStockHistory.data[0].quantityOfTrades,
-                                            netProfit: totalStockHistory.data[0].netProfit,
-                                            totalInvested: totalStockHistory.data[0].totalInvested,
-                                        })
-                                        .catch((err) => {
-                                            alert("Error Creating TotalStockHistory Patch");
-                                        });
-
-
-                                })
-                                .catch((err) => { console.log("ERROR IN SPECIFIC STOCK HISTORY 2") });
-                        }
                         else {
 
-                            let index = null;
-                            for (var i = 0; i < specificStockHistory.length; i++) {
-                                if (specificStockHistory[i].data.ticker == OrderInfo.ticker) {
-                                    index = i;
-                                    break;
-                                }
-                            }
-
-                            if (OrderInfo.buyOrSell == "S") {
-
-                                let gainPerShare = OrderInfo.price - specificStockHistory.data[index].currentHoldingAvgValue;
-                                let net_gain = gainPerShare * quantity;
-                                specificStockHistory.data[index].netProfit += net_gain;
-                                specificStockHistory.data[index].sharesOwned -= quantity;
-                                totalStockHistory.data[0].quantityOfTrades++;
-                                totalStockHistory.data[0].netProfit += net_gain;
-                            }
-
-                            else {
-
-                                let net = price * quantity;
-                                specificStockHistory.data[index].amountInvested += net
-                                let avgValue = specificStockHistory.data[index].currentHoldingAvgValue;
-                                let sharesOwned = specificStockHistory.data[index].sharesOwned;
-                                specificStockHistory.data[index].currentHoldingAvgValue = ((avgValue * sharesOwned) + net) / (sharesOwned + quantity);
-                                specificStockHistory.data[index].sharesOwned += quantity;
-                                totalStockHistory.data[0].totalInvested += net;
-                            }
-
-
-
-                            let specificStockEndPoint = "SpecificStockOrderHistoryPutPatchDelete/" + specificStockHistory.data[index].id + "/";
-                            let totalStockHistoryEndPoint = "TotalStockOrderHistoryPutPatchDelete/" + totalStockHistory.data[0].id + "/";
-
-                            axiosInstance
-                                .put(specificStockEndPoint, {
-                                    ticker: specificStockHistory.data[index].ticker,
-                                    industry: specificStockHistory.data[index].industry,
-                                    netProfit: specificStockHistory.data[index].netProfit,
-                                    exchange: specificStockHistory.data[index].exchange,
-                                    amountInvested: specificStockHistory.data[index].amountInvested,
-                                    currentHoldingAvgValue: specificStockHistory.data[index].currentHoldingAvgValue,
-                                    sharesOwned: specificStockHistory.data[index].sharesOwned,
-                                    stockHistoryID: totalStockHistory.data[0].id,
-                                })
-                                .then()
-                                .catch((err) => {
-                                    alert("Error Creating SpecificStockOrderHistoryPut");
-                                });
-
-                            axiosInstance
-                                .patch(totalStockHistoryEndPoint, {
-                                    quantityOfTrades: totalStockHistory.data[0].quantityOfTrades,
-                                    netProfit: totalStockHistory.data[0].netProfit,
-                                    totalInvested: totalStockHistory.data[0].totalInvested,
-                                })
-                                .catch((err) => {
-                                    alert("Error Creating TotalStockHistory Patch");
-                                });
+                            let net = price * quantity;
+                            specificStockHistory.data.amountInvested += parseInt(net);
+                            let avgValue = specificStockHistory.data.currentHoldingAvgValue;
+                            let sharesOwned = specificStockHistory.data.sharesOwned;
+                            specificStockHistory.data.currentHoldingAvgValue = ((avgValue * sharesOwned) + parseInt(net)) / (parseInt(sharesOwned) + parseInt(quantity));
+                            specificStockHistory.data.sharesOwned += parseInt(quantity);
+                            totalStockHistory.data[0].totalInvested += parseInt(net);
                         }
 
 
 
+                        let specificStockEndPoint = "SpecificStockOrderHistoryPutPatchDelete/" + specificStockHistory.data.id + "/";
+                        let totalStockHistoryEndPoint = "TotalStockOrderHistoryPutPatchDelete/" + totalStockHistory.data[0].id + "/";
 
+                        axiosInstance
+                            .patch(specificStockEndPoint, {
+                                ticker: specificStockHistory.data.ticker,
+                                industry: specificStockHistory.data.industry,
+                                netProfit: specificStockHistory.data.netProfit,
+                                exchange: specificStockHistory.data.exchange,
+                                amountInvested: specificStockHistory.data.amountInvested,
+                                currentHoldingAvgValue: specificStockHistory.data.currentHoldingAvgValue,
+                                sharesOwned: specificStockHistory.data.sharesOwned,
+                                stockHistoryID: totalStockHistory.data[0].id,
+                            })
+                            .then()
+                            .catch((err) => {
+                                alert("Error Creating SpecificStockOrderHistoryPut");
+                            });
 
-
-
-
-
-
-
-
-
+                        axiosInstance
+                            .patch(totalStockHistoryEndPoint, {
+                                quantityOfTrades: totalStockHistory.data[0].quantityOfTrades,
+                                netProfit: totalStockHistory.data[0].netProfit,
+                                totalInvested: totalStockHistory.data[0].totalInvested,
+                            })
+                            .catch((err) => {
+                                alert("Error Creating TotalStockHistory Patch");
+                            });
 
                     })
                     .catch((err) => {
@@ -287,21 +175,97 @@ const CreateOrder = () => {
 
             })
             .catch((err) => {
-                alert("ERROR GETTING SPECFIC STOCK");
+
+                console.log("Creating Specifc Stock History");
+                axiosInstance
+                    .get('TotalStockOrderHistoryGetPost/')
+                    .then(totalStockHistory => {
+
+
+                        let exchange = prompt("Please Specify Which Exchange This Stock Belongs To: ");
+                        let industry = prompt("Please Specify Which Industry This Stock Belongs To: ");
+
+                        axiosInstance
+                            .post('SpecificStockOrderHistoryGetPost/', {
+                                ticker: OrderInfo.ticker,
+                                industry: industry,
+                                netProfit: 0,
+                                exchange: exchange,
+                                amountInvested: 0,
+                                currentHoldingAvgValue: 0,
+                                sharesOwned: 0,
+                                stockHistoryID: totalStockHistory.data[0].id,
+                            })
+                            .then(specificStockHistoryResponse => {
+                                console.log(totalStockHistory.data[0].id);
+
+
+                                console.log(specificStockHistoryResponse.data);
+
+                                if (OrderInfo.buyOrSell == "S") {
+
+                                    let gainPerShare = OrderInfo.price - specificStockHistoryResponse.data.currentHoldingAvgValue;
+                                    let net_gain = gainPerShare * quantity;
+                                    specificStockHistoryResponse.data.netProfit += parseInt(net_gain);
+                                    specificStockHistoryResponse.data.sharesOwned -= quantity;
+                                    totalStockHistory.data[0].quantityOfTrades++;
+                                    totalStockHistory.data[0].netProfit += parseInt(net_gain);
+                                }
+
+                                else {
+
+                                    let net = price * quantity;
+                                    specificStockHistoryResponse.data.amountInvested += parseInt(net);
+                                    let avgValue = specificStockHistoryResponse.data.currentHoldingAvgValue;
+                                    let sharesOwned = specificStockHistoryResponse.data.sharesOwned;
+                                    specificStockHistoryResponse.data.currentHoldingAvgValue = ((avgValue * sharesOwned) + parseInt(net)) / (parseInt(sharesOwned) + parseInt(quantity));
+                                    specificStockHistoryResponse.data.sharesOwned += quantity;
+                                    totalStockHistory.data[0].totalInvested += net;
+                                }
+
+
+
+                                let specificStockEndPoint = "SpecificStockOrderHistoryPutPatchDelete/" + specificStockHistoryResponse.data.id + "/";
+                                console.log(totalStockHistory.data[0].id);
+                                let totalStockHistoryEndPoint = "TotalStockOrderHistoryPutPatchDelete/" + totalStockHistory.data[0].id + "/";
+
+                                axiosInstance
+                                    .put(specificStockEndPoint, {
+                                        ticker: specificStockHistoryResponse.data.ticker,
+                                        industry: specificStockHistoryResponse.data.industry,
+                                        netProfit: specificStockHistoryResponse.data.netProfit,
+                                        exchange: specificStockHistoryResponse.data.exchange,
+                                        amountInvested: specificStockHistoryResponse.data.amountInvested,
+                                        currentHoldingAvgValue: specificStockHistoryResponse.data.currentHoldingAvgValue,
+                                        sharesOwned: specificStockHistoryResponse.data.sharesOwned,
+                                        stockHistoryID: totalStockHistory.data[0].id,
+                                    })
+                                    .then()
+                                    .catch((err) => {
+                                        alert("Error Creating SpecificStockOrderHistoryPut");
+                                    });
+
+                                axiosInstance
+                                    .patch(totalStockHistoryEndPoint, {
+                                        quantityOfTrades: totalStockHistory.data[0].quantityOfTrades,
+                                        netProfit: totalStockHistory.data[0].netProfit,
+                                        totalInvested: totalStockHistory.data[0].totalInvested,
+                                    })
+                                    .catch((err) => {
+                                        alert("Error Creating TotalStockHistory Patch");
+                                    });
+
+
+                            })
+                            .catch((err) => { console.log("ERROR IN SPECIFIC STOCK HISTORY 2") });
+
+                    })
+                    .catch((err) => {
+                        alert("Error Getting Total Stock history");
+                    }
+                    );
             }
             );
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 
