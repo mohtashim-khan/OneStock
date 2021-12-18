@@ -3,6 +3,8 @@ import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
 import axiosInstance from '../axios';
+import { useNavigate } from 'react-router-dom';
+
 const CreateOrder = () => {
 
     const [ticker, setTicker] = useState('');
@@ -12,7 +14,8 @@ const CreateOrder = () => {
     const [account, setAccount] = useState(null);
     const [buyOrSell, setbuyOrSell] = useState('B');
     const [accounts, setAccounts] = useState(null);
-    const [stateSpecfic, setstateSpecific] = useState(null);
+    const navigate = useNavigate();
+
 
 
     let userinfo = null;
@@ -112,7 +115,7 @@ const CreateOrder = () => {
                 axiosInstance
                     .get('TotalStockOrderHistoryGetPost/')
                     .then(totalStockHistory => {
-                        
+
                         if (OrderInfo.buyOrSell == "S") {
 
                             let gainPerShare = OrderInfo.price - specificStockHistory.data.currentHoldingAvgValue;
@@ -165,14 +168,17 @@ const CreateOrder = () => {
                                 alert("Error Creating TotalStockHistory Patch");
                             });
 
+                        alert("Order Added!");
+                        navigate('/StockOrderHistory');
+
                     })
                     .catch((err) => {
                         alert("Error Getting Total Stock history");
                     }
                     );
 
-
-
+                alert("Order Added!");
+                navigate('/StockOrderHistory');
             })
             .catch((err) => {
 
@@ -255,6 +261,8 @@ const CreateOrder = () => {
                                         alert("Error Creating TotalStockHistory Patch");
                                     });
 
+                                alert("Order Added!");
+                                navigate('/StockOrderHistory');
 
                             })
                             .catch((err) => { console.log("ERROR IN SPECIFIC STOCK HISTORY 2") });
@@ -264,6 +272,7 @@ const CreateOrder = () => {
                         alert("Error Getting Total Stock history");
                     }
                     );
+
             }
             );
 

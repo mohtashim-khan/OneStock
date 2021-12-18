@@ -1,47 +1,69 @@
 import React from 'react'
 import NavBar from '../components/Navbar';
 import '../css/Home.css';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import axiosInstance from '../axios';
+const Home = () => {
 
-const [largestValues, setLargestValues] = useState(null);
-const [smallestValues, setSmallestValues] = useState(null);
-
-
-useEffect(() => {
-    axiosInstance
-        .get('LargestGainsSpecificStockHistory/')
-        .then(response => {
-            setLargestValues(response.data);
-        })
-        .catch((err) => {
-            alert("NOT LOGGED IN");
-        }
-        );
+    const [largestValues, setLargestValues] = useState(null);
+    const [smallestValues, setSmallestValues] = useState(null);
+    const [totalStockHistory, setTotalStockHistory] = useState(null);
 
 
-    axiosInstance
-        .get('SmallestGainsSpecificStockHistory/')
-        .then(response => {
-            setSmallestValues(response.data);
-        })
-        .catch((err) => {
-        }
-        );
+    useEffect(() => {
+        axiosInstance
+            .get('LargestGainsSpecificStockHistory/')
+            .then(response => {
+                setLargestValues(response.data);
+            })
+            .catch((err) => {
+                alert("NOT LOGGED IN");
+            }
+            );
 
-}, []);
+
+        axiosInstance
+            .get('SmallestGainsSpecificStockHistory/')
+            .then(response => {
+                setSmallestValues(response.data);
+            })
+            .catch((err) => {
+            }
+            );
+
+        axiosInstance
+            .get('TotalStockOrderHistoryGetPost/')
+            .then(response => {
+                setTotalStockHistory(response.data);
+            })
+            .catch((err) => {
+            }
+            );
+
+
+    }, []);
 
 
 
-function Home() {
     return (
         <>
             <NavBar />
             <div>
                 <h2>Welcome Home</h2>
                 <p2> Overall Portfolio Performance: </p2>
-                <net_back>%10.9</net_back>
-                <p3>Overall Net Value:</p3>
-                <over_back>$120,021.02</over_back>
+                {totalStockHistory &&
+                    totalStockHistory.map((value) => (
+                        <net_back>% {(parseFloat((totalStockHistory[0].netProfit) + parseFloat(totalStockHistory[0].totalInvested)) / (parseFloat(totalStockHistory[0].totalInvested)))*100-100}</net_back>
+
+                    ))
+                }
+                <p3>Overall Net Profit:</p3>
+                {totalStockHistory &&
+                    totalStockHistory.map((value) => (
+                        <over_back>$ {totalStockHistory[0].netProfit}</over_back>
+
+                    ))
+                }
                 <table val="1">
                     <caption>Top 5 Largest Gains</caption>
                     <tr>
