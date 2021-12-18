@@ -150,6 +150,14 @@ class SpecificStockOrderHistoryPutPatchDelete(generics.RetrieveUpdateDestroyAPIV
         user = self.request.user
         return Specific_Stock_History.objects.filter(stockHistoryID__in=TotalStockHistory.objects.filter(user=user))
 
+class SpecificStockOrderHistoryPutPatchDeleteByTicker(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = Specific_Stock_HistorySerializer
+    lookup_field = 'ticker'
+
+    def get_queryset(self):
+        user = self.request.user
+        return Specific_Stock_History.objects.filter(stockHistoryID__in=TotalStockHistory.objects.filter(user=user))
 
 class TotalStockOrderHistoryGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
