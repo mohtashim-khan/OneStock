@@ -117,21 +117,21 @@ const CreateOrder = () => {
 
                             let gainPerShare = OrderInfo.price - specificStockHistory.data.currentHoldingAvgValue;
                             let net_gain = gainPerShare * quantity;
-                            specificStockHistory.data.netProfit += parseInt(net_gain);
+                            specificStockHistory.data.netProfit += parseFloat(net_gain);
                             specificStockHistory.data.sharesOwned -= quantity;
                             totalStockHistory.data[0].quantityOfTrades++;
-                            totalStockHistory.data[0].netProfit += parseInt(net_gain);
+                            totalStockHistory.data[0].netProfit += parseFloat(net_gain);
                         }
 
                         else {
 
                             let net = price * quantity;
-                            specificStockHistory.data.amountInvested += parseInt(net);
+                            specificStockHistory.data.amountInvested += parseFloat(net);
                             let avgValue = specificStockHistory.data.currentHoldingAvgValue;
                             let sharesOwned = specificStockHistory.data.sharesOwned;
-                            specificStockHistory.data.currentHoldingAvgValue = ((avgValue * sharesOwned) + parseInt(net)) / (parseInt(sharesOwned) + parseInt(quantity));
-                            specificStockHistory.data.sharesOwned += parseInt(quantity);
-                            totalStockHistory.data[0].totalInvested += parseInt(net);
+                            specificStockHistory.data.currentHoldingAvgValue = ((avgValue * sharesOwned) + parseFloat(net)) / (parseFloat(sharesOwned) + parseFloat(quantity));
+                            specificStockHistory.data.sharesOwned += parseFloat(quantity);
+                            totalStockHistory.data[0].totalInvested += parseFloat(net);
                         }
 
 
@@ -206,19 +206,19 @@ const CreateOrder = () => {
 
                                     let gainPerShare = OrderInfo.price - specificStockHistoryResponse.data.currentHoldingAvgValue;
                                     let net_gain = gainPerShare * quantity;
-                                    specificStockHistoryResponse.data.netProfit += parseInt(net_gain);
+                                    specificStockHistoryResponse.data.netProfit += parseFloat(net_gain);
                                     specificStockHistoryResponse.data.sharesOwned -= quantity;
                                     totalStockHistory.data[0].quantityOfTrades++;
-                                    totalStockHistory.data[0].netProfit += parseInt(net_gain);
+                                    totalStockHistory.data[0].netProfit += parseFloat(net_gain);
                                 }
 
                                 else {
 
                                     let net = price * quantity;
-                                    specificStockHistoryResponse.data.amountInvested += parseInt(net);
+                                    specificStockHistoryResponse.data.amountInvested += parseFloat(net);
                                     let avgValue = specificStockHistoryResponse.data.currentHoldingAvgValue;
                                     let sharesOwned = specificStockHistoryResponse.data.sharesOwned;
-                                    specificStockHistoryResponse.data.currentHoldingAvgValue = ((avgValue * sharesOwned) + parseInt(net)) / (parseInt(sharesOwned) + parseInt(quantity));
+                                    specificStockHistoryResponse.data.currentHoldingAvgValue = ((avgValue * sharesOwned) + parseFloat(net)) / (parseFloat(sharesOwned) + parseFloat(quantity));
                                     specificStockHistoryResponse.data.sharesOwned += quantity;
                                     totalStockHistory.data[0].totalInvested += net;
                                 }
