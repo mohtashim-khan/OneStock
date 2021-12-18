@@ -5,6 +5,7 @@ import AddBrokerage from './pages/AddBrokerage';
 import React, {Component} from 'react';
 import CreateOrder from './pages/CreateOrder';
 import ModifyOrder from './pages/ModifyOrder';
+import DeleteOrder from './pages/DeleteOrder';
 import CreateCryptoOrder from './pages/CreateCryptoOrder';
 import ModifyCryptoOrder from './pages/ModifyCryptoOrder';
 import DeleteCryptoOrder from './pages/DeleteCryptoOrder';
@@ -42,6 +43,7 @@ function App() {
 
           <Route path="/CreateOrder" element = {<CreateOrder />} />
           <Route path="/ModifyOrder" element = {<ModifyOrder />} />
+          <Route path="/DeleteOrder" element = {<DeleteOrder />} />
 
           <Route path="/CreateCryptoOrder" element = {<CreateCryptoOrder />} />
           <Route path="/ModifyCryptoOrder" element = {<ModifyCryptoOrder />} />

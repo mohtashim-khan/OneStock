@@ -69,9 +69,18 @@ function SpecificStockHistory(){
     return(
         <>
 
-        <div>
+        
             <NavBar />
+            <group id="specific">
             <h2>Specific Stock Information</h2>
+            <form class="form-wrapper" onSubmit={handleSubmit}>
+                
+                    
+                <input type="text" placeholder="Enter Specific Ticker e.g TSLA.." onChange={(e) => setTicker(e.target.value)}></input>
+                <input type="submit" name="submit" value="Search" /> 
+                
+                
+            </form>
             <p2> Specific Stock Performance: </p2>
             <net_back>%3.9</net_back>
             <p3>Stock Net Value:</p3>
@@ -109,18 +118,11 @@ function SpecificStockHistory(){
             </table>
            
 
-            <form class="form-wrapper" onSubmit={handleSubmit}>
-                
-                    
-                <input type="text" placeholder="Enter Specific Ticker e.g TSLA.." onChange={(e) => setTicker(e.target.value)}></input>
-                <input type="submit" name="submit" value="Search" /> 
-                
-                
-            </form>
+            
 
+            </group>
 
-
-        </div>
+        
         </>
     );
 }

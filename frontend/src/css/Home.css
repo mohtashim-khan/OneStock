@@ -1,7 +1,7 @@
 
 h1{
     font-size: 50px;
-    margin-bottom: 30px;
+    
 }
 .buttonsContainer{
     margin-left:auto;
@@ -10,49 +10,54 @@ h1{
 h2 {
     font-size: 30px;
     color: black;
-    margin-bottom: 30px;
+    
   }
 
 p2 {
-    position: absolute;
-    left: 200px;
+    
+    
     font-size: 25px;
     color: black;
-    margin-bottom: 30px;
+    
     }
 
 p3 {
-    position: absolute;
-    Right: 700px;
+    
+    
     font-size: 25px;
     color: black;
-    margin-bottom: 30px;
+    
     }
 over_back{
-    position: absolute;
+    position: flex;
     width: 200px;
     height: 60px;
-    Right: 480px;
-    top: 255px;
+    display: flex;
+    justify-content: center;
     font-size: 30px;
     color: #eaebe8;
     text-align: center;
     background: #4A5268;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-left: auto;
+    margin-right: auto;
     }
 
 net_back{
-    position: absolute;
+    position: flex;
     width: 200px;
     height: 60px;
-    left: 550px;
-    top: 255px;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
     text-align: center;
     font-size: 30px;
     color: #8fca3d;
 
     background: #4A5268;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 input, textarea, select {
@@ -106,45 +111,64 @@ caption {
 }
 
 table[val = "1"] {
-    position: absolute;
+    position: flex;
     border-collapse: collapse;
     border: 2px solid rgb(2, 1, 1);
     letter-spacing: 1px;
     font-family: sans-serif;
     font-size: .8rem;
-    top: 400px;
-    left: 200px
+    margin-right: auto;
+    margin-left: auto;
+    
 }
 table[val = "2"] {
-    position: absolute;
+    position: flex;
     border-collapse: collapse;
     border: 2px solid rgb(2, 1, 1);
     letter-spacing: 1px;
     font-family: sans-serif;
     font-size: .8rem;
-    top: 400px;
-    Right: 300px
+    margin-right: auto;
+    margin-left: auto;
+   
 }
-
+.hometables{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    
+    
+}
+div9{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+   
+    margin-left: auto;
+    margin-right: auto;
+   
+}
 table[val = "3"] {
-    position: absolute;
+    
     border-collapse: collapse;
     border: 2px solid rgb(2, 1, 1);
     letter-spacing: 1px;
     font-family: sans-serif;
     font-size: .8rem;
-    top: 600px;
-    Left: 200px
+    margin-right: auto;
+    margin-left: auto;
+    
 }
 table[val = "4"] {
-    position: absolute;
+
     border-collapse: collapse;
     border: 2px solid rgb(2, 1, 1);
     letter-spacing: 1px;
     font-family: sans-serif;
     font-size: .8rem;
-    top: 800px;
-    Left: 200px
+    margin-right: auto;
+    margin-left: auto;
+
 }
 table[val = "5"] {
     position: absolute;
@@ -227,4 +251,10 @@ table[val = "10"] {
     flex-direction: column-reverse;
     
     align-items: center;
+}
+
+.specific{
+    display: flex;
+    justify-content: center;
+
 }

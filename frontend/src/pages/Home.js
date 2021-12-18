@@ -48,12 +48,12 @@ const Home = () => {
     return (
         <>
             <NavBar />
-            <div>
+            <div9>
                 <h2>Welcome Home</h2>
                 <p2> Overall Portfolio Performance: </p2>
                 {totalStockHistory &&
                     totalStockHistory.map((value) => (
-                        <net_back>% {(parseFloat((totalStockHistory[0].netProfit) + parseFloat(totalStockHistory[0].totalInvested)) / (parseFloat(totalStockHistory[0].totalInvested)))*100-100}</net_back>
+                        <net_back>% {((parseFloat((totalStockHistory[0].netProfit) + parseFloat(totalStockHistory[0].totalInvested)) / (parseFloat(totalStockHistory[0].totalInvested)))*100-100).toFixed(2)}</net_back>
 
                     ))
                 }
@@ -64,6 +64,7 @@ const Home = () => {
 
                     ))
                 }
+                <group id="hometables">
                 <table val="1">
                     <caption>Top 5 Largest Gains</caption>
                     <tr>
@@ -114,7 +115,8 @@ const Home = () => {
                         ))
                     }
                 </table>
-            </div>
+                </group>
+            </div9>
         </>
     );
 }
