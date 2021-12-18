@@ -53,9 +53,11 @@ const StockOrderHistory = () => {
                         >Create Custom Order
                         </Button>
 
-                        <Button href="/ModifyOrder" >Modify Order By ID</Button>
+                        <Button href="/ModifyOrder" >Modify Order</Button>
+                        <Button href="/DeleteOrder" >Delete Order</Button>
                         <Button href="/AddBrokerage" >Add Brokerage</Button>
                         <Button href="/AddAccount" >Add Account</Button>
+                        
                     </ButtonGroup>
 
                 </div>
@@ -72,6 +74,7 @@ const StockOrderHistory = () => {
                         <th>Quantity</th>
                         <th>Date</th>
                         <th>Value</th>
+                        <th>Buy/Sell</th>
                         <th>OrderReqID</th>
                     </tr>
                     {entrys &&
@@ -83,6 +86,7 @@ const StockOrderHistory = () => {
                                 <th>{entry.quantity}</th>
                                 <th>{entry.purchaseTime}</th>
                                 <th>{entry.purchasePrice * entry.quantity}</th>
+                                <th>{entry.buysell}</th>
                                 <th>{entry.orderReqID}</th>
 
                             </tr>

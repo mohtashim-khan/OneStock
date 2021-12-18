@@ -4,7 +4,6 @@ import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
 import axiosInstance from '../axios';
 import { useNavigate } from 'react-router-dom';
-
 const CreateOrder = () => {
 
     const [ticker, setTicker] = useState('');
@@ -14,10 +13,10 @@ const CreateOrder = () => {
     const [account, setAccount] = useState(null);
     const [buyOrSell, setbuyOrSell] = useState('B');
     const [accounts, setAccounts] = useState(null);
+    
+
+
     const navigate = useNavigate();
-
-
-
     let userinfo = null;
 
     userinfo = parseJwt(localStorage.getItem('access_token'));
@@ -115,7 +114,6 @@ const CreateOrder = () => {
                 axiosInstance
                     .get('TotalStockOrderHistoryGetPost/')
                     .then(totalStockHistory => {
-
                         if (OrderInfo.buyOrSell == "S") {
 
                             let gainPerShare = OrderInfo.price - specificStockHistory.data.currentHoldingAvgValue;
@@ -183,7 +181,6 @@ const CreateOrder = () => {
                 axiosInstance
                     .get('TotalStockOrderHistoryGetPost/')
                     .then(totalStockHistory => {
-
 
                         let exchange = prompt("Please Specify Which Exchange This Stock Belongs To: ");
                         let industry = prompt("Please Specify Which Industry This Stock Belongs To: ");
@@ -272,7 +269,7 @@ const CreateOrder = () => {
 
             }
             );
-
+            navigate('/StockOrderHistory');
     }
 
     return (

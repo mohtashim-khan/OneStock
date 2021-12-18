@@ -6,6 +6,11 @@
     margin: 0 auto;
     text-align: center;
   }
+  .AddAccount {
+    max-width: 30%;
+    margin: 0 auto;
+    text-align: center;
+  }
 h1{
     font-size: 50px;
     margin-bottom: 30px;
