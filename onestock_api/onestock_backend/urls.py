@@ -32,6 +32,7 @@ urlpatterns = [
     path('AccountPutPatchDelete/<int:pk>/', views.AccountPutPatchDelete.as_view(), name = "AccountPutPatchDelete"),
     path('LargestGainsSpecificStockHistory/', views.LargestGainsSpecificStockHistory.as_view(), name = "LargestGainsSpecificStockHistory"),
     path('SmallestGainsSpecificStockHistory/', views.SmallestGainsSpecificStockHistory.as_view(), name = "SmallestGainsSpecificStockHistory"),
+    path('GetOrdersByTicker/', views.GetOrdersByTicker.as_view(), name = "GetOrdersByTicker"),
 
 
 

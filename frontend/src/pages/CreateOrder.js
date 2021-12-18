@@ -176,9 +176,6 @@ const CreateOrder = () => {
                         alert("Error Getting Total Stock history");
                     }
                     );
-
-                alert("Order Added!");
-                navigate('/StockOrderHistory');
             })
             .catch((err) => {
 

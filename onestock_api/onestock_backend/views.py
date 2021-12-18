@@ -230,14 +230,21 @@ class OrderFormPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
 
 class DividendGetPost(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Dividend.objects.all()
     serializer_class = DividendSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        return Dividend.objects.filter(ticker__in = Specific_Stock_History.objects.filter(stockHistoryID__in=TotalStockHistory.objects.filter(user=user)))
 
 
 class DividendPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Dividend.objects.all()
     serializer_class = DividendSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Dividend.objects.filter(ticker__in = Specific_Stock_History.objects.filter(stockHistoryID__in=TotalStockHistory.objects.filter(user=user)))
+
 
 
 class AccountGetPost(generics.ListCreateAPIView):
@@ -273,3 +280,13 @@ class SmallestGainsSpecificStockHistory(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return Specific_Stock_History.objects.filter(stockHistoryID__in=TotalStockHistory.objects.filter(user=user)).order_by('netProfit')[:5]
+
+
+class GetOrdersByTicker(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = OrderSerializer
+    lookup_field = 'ticker'
+
+    def get_queryset(self):
+        user = self.request.user
+        return Order.objects.filter(orderReqID__in=OrderForm.objects.filter(account__in=Account.objects.filter(user=user)))
