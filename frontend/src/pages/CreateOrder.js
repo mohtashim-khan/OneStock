@@ -114,7 +114,6 @@ const CreateOrder = () => {
                 axiosInstance
                     .get('TotalStockOrderHistoryGetPost/')
                     .then(totalStockHistory => {
-
                         if (OrderInfo.buyOrSell == "S") {
 
                             let gainPerShare = OrderInfo.price - specificStockHistory.data.currentHoldingAvgValue;
@@ -185,7 +184,6 @@ const CreateOrder = () => {
                 axiosInstance
                     .get('TotalStockOrderHistoryGetPost/')
                     .then(totalStockHistory => {
-
 
                         let exchange = prompt("Please Specify Which Exchange This Stock Belongs To: ");
                         let industry = prompt("Please Specify Which Industry This Stock Belongs To: ");
