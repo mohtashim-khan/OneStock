@@ -4,22 +4,21 @@ import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
 import axiosInstance from '../axios';
 import { useNavigate } from 'react-router-dom';
-const ModifyCommoditiesOrder = () => {
+const DeleteRealEstateOrder = () => {
 
     const [orderID, setOrderID] = useState(null);
     const [valuation, setValuation] = useState(null);
     const [type, setType] = useState(null);
-    const [price, setPrice] = useState(null);
-    const [quantity, setQuantity] = useState(null);
+    const [location, setLocation] = useState(null);
+    const [address, setAddress] = useState(null);
     const navigate = useNavigate();
-    const [commods, setCommods] = useState(null);
-
+    const [reales, setReales] = useState(null);
     useEffect(() => {
        
         axiosInstance
-        .get('CommodotiesGetPost/')
+        .get('RealEstateGetPost/')
             .then(response => {
-                setCommods(response.data)
+                setReales(response.data)
             })
             .catch((err) => {
                 console.log(err)
@@ -34,18 +33,19 @@ const ModifyCommoditiesOrder = () => {
     // empty dependency array means this effect will only run once (like componentDidMount in classes)
     }, []);
 
+
+
     const handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         const OrderInfo = {
             orderID,
-            valuation,
-            type
+            
+           
         }
 
         axiosInstance
-        .patch('CommoditiesGetPutPatchDelete/'+OrderInfo.orderID+'/', {
-            valuation: OrderInfo.valuation,
-            type: OrderInfo.type,
+        .delete('RealEstatePutPatchDelete/'+OrderInfo.orderID+'/', {
+            
         
         })
         .catch((err) => {
@@ -60,39 +60,27 @@ const ModifyCommoditiesOrder = () => {
         <div className="content">
             <NavBar />
             <div className="CreateOrder">
-                <h2>Modify Commodities Order</h2>
+                <h2>Delete Real Estate Order</h2>
                 <form onSubmit={handleSubmit}>
                     <label>OrderID: </label>
-                    <select 
+                    <select
                         required
                         value={orderID}
                         onChange={(e) => setOrderID(e.target.value)} >
-                        {commods&&
-                            commods.map((commod) => (
-                                <option value={commod.id}>{commod.id}</option>    
+                        {reales&&
+                            reales.map((real) => (
+                                <option value={real.id}>{real.id}</option>    
                         ))
                         }
-                        {!commods ?(
-                            <option value="null">No existsing Commodoties, Please Add Commodities First</option>  
+                        {!reales ?(
+                            <option value="null">No existsing reales, Please Add Crypto First</option>  
                             ):
-                            (<option value="null">Please Select an Commodoties Id</option>
+                            (<option value="null">Please Select an Crypto Id</option>
                             )
                         }
-                    </select>
-                        
-                    <label>New Valuation: </label>
-                    <input type="number"
-                        required
-                        value={valuation}
-                        onChange={(e) => setValuation(e.target.value)} />
-
-                    <label>Type: </label>
-                    <input type="text"
-                        required
-                        value={type}
-                        onChange={(e) => setType(e.target.value)} />
-
-                    <button>Modify Commodities Order</button>
+                    </select> 
+                    
+                    <button>Delete Real Estate Order</button>
                 </form>
 
             </div>
@@ -103,4 +91,4 @@ const ModifyCommoditiesOrder = () => {
     );
 }
 
-export default ModifyCommoditiesOrder;
+export default DeleteRealEstateOrder;

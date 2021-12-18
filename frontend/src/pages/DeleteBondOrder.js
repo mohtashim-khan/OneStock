@@ -4,13 +4,10 @@ import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
 import axiosInstance from '../axios';
 import { useNavigate } from 'react-router-dom';
-const ModifyBondOrder = () => {
+const DeleteBondOrder = () => {
 
     const [orderID, setOrderID] = useState(null);
-    const [valuation, setValuation] = useState(null);
-    const [faceValue, setFaceValue] = useState(null);
-    const [maturityDate, setMaturityDate] = useState(null);
-    const [interest, setInterest] = useState(null);
+    
     const [bonds, setBonds] = useState(null);
 
     const navigate = useNavigate();
@@ -41,18 +38,11 @@ const ModifyBondOrder = () => {
         e.preventDefault()
         const OrderInfo = {
             orderID,
-            valuation,
-            faceValue,
-            maturityDate,
-            interest
+            
         }
         axiosInstance
-        .patch('BondsGetPutPatchDelete/'+OrderInfo.orderID+'/', {
-            valuation: OrderInfo.valuation,
-            principal: OrderInfo.faceValue,
-            maturityDate: OrderInfo.maturityDate,
-            interest: OrderInfo.interest,
-    
+        .delete('BondsGetPutPatchDelete/'+OrderInfo.orderID+'/', {
+          
         })
         .catch((err) => {
             alert("No existing asset, please create the asset first");
@@ -67,7 +57,7 @@ const ModifyBondOrder = () => {
         <div className="content">
             <NavBar />
             <div className="CreateOrder">
-                <h2>Modify Bond Order</h2>
+                <h2>Delete Bond Order</h2>
                 <form onSubmit={handleSubmit}>
                     <label>OrderID: </label>
                     <select 
@@ -86,33 +76,9 @@ const ModifyBondOrder = () => {
                             )
                         }
                     </select>
-                    <label>Modify Valuation: </label>
-                    <input type="number"
-                        required
-                        value={valuation}
-                        onChange={(e) => setValuation(e.target.value)} />
-
-                    <label>Modify Face Value: </label>
-                    <input type="number"
-                        required
-                        value={faceValue}
-                        onChange={(e) => setFaceValue(e.target.value)} />
-
-                    <label>Modify Maturity Date: </label>
-                    <input type="date"
-                        required
-                        value={maturityDate}
-                        onChange={(e) => setMaturityDate(e.target.value)} />
-
-                    <label>Modify Interest: </label>
-                    <input type="number"
-                        required
-                        value={interest}
-                        onChange={(e) => setInterest(e.target.value)} />
 
 
-
-                    <button>Modify Bond Order</button>
+                    <button>Delete Bond Order</button>
                 </form>
 
             </div>
@@ -123,4 +89,4 @@ const ModifyBondOrder = () => {
     );
 }
 
-export default ModifyBondOrder;
+export default DeleteBondOrder;

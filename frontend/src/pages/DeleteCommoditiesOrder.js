@@ -4,7 +4,7 @@ import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
 import axiosInstance from '../axios';
 import { useNavigate } from 'react-router-dom';
-const ModifyCommoditiesOrder = () => {
+const DeleteCommoditiesOrder = () => {
 
     const [orderID, setOrderID] = useState(null);
     const [valuation, setValuation] = useState(null);
@@ -43,9 +43,8 @@ const ModifyCommoditiesOrder = () => {
         }
 
         axiosInstance
-        .patch('CommoditiesGetPutPatchDelete/'+OrderInfo.orderID+'/', {
-            valuation: OrderInfo.valuation,
-            type: OrderInfo.type,
+        .delete('CommoditiesGetPutPatchDelete/'+OrderInfo.orderID+'/', {
+        
         
         })
         .catch((err) => {
@@ -60,7 +59,7 @@ const ModifyCommoditiesOrder = () => {
         <div className="content">
             <NavBar />
             <div className="CreateOrder">
-                <h2>Modify Commodities Order</h2>
+                <h2>Delete Commodities Order</h2>
                 <form onSubmit={handleSubmit}>
                     <label>OrderID: </label>
                     <select 
@@ -79,20 +78,8 @@ const ModifyCommoditiesOrder = () => {
                             )
                         }
                     </select>
-                        
-                    <label>New Valuation: </label>
-                    <input type="number"
-                        required
-                        value={valuation}
-                        onChange={(e) => setValuation(e.target.value)} />
-
-                    <label>Type: </label>
-                    <input type="text"
-                        required
-                        value={type}
-                        onChange={(e) => setType(e.target.value)} />
-
-                    <button>Modify Commodities Order</button>
+         
+                    <button>Delete Commodities Order</button>
                 </form>
 
             </div>
@@ -103,4 +90,4 @@ const ModifyCommoditiesOrder = () => {
     );
 }
 
-export default ModifyCommoditiesOrder;
+export default DeleteCommoditiesOrder;

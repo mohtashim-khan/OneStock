@@ -4,7 +4,7 @@ import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
 import axiosInstance from '../axios';
 import { useNavigate } from 'react-router-dom';
-const ModifyCashOrder = () => {
+const DeleteCashOrder = () => {
 
     const [orderID, setOrderID] = useState(null);
     const [valuation, setValuation] = useState(null);
@@ -37,16 +37,12 @@ const ModifyCashOrder = () => {
         e.preventDefault()
         const OrderInfo = {
             orderID,
-            valuation,
-            bank,
-            currencyType
+           
         }
 
         axiosInstance
-        .patch('CashGetPutPatchDelete/'+OrderInfo.orderID+'/', {
-            valuation: OrderInfo.valuation,
-            bank: OrderInfo.bank,
-            currency: OrderInfo.currencyType,
+        .delete('CashGetPutPatchDelete/'+OrderInfo.orderID+'/', {
+         
     
         })
         .catch((err) => {
@@ -61,7 +57,7 @@ const ModifyCashOrder = () => {
         <div className="content">
             <NavBar />
             <div className="CreateOrder">
-                <h2>Modify Cash Order</h2>
+                <h2>Delete Cash Order</h2>
                 <form onSubmit={handleSubmit}>
                     <label>OrderID: </label>
                     <select
@@ -81,27 +77,9 @@ const ModifyCashOrder = () => {
                         }
                     </select>
 
-                    <label>Modify Valuation: </label>
-                    <input type="number"
-                        required
-                        value={valuation}
-                        onChange={(e) => setValuation(e.target.value)} />
+                   
 
-                    <label>Bank: </label>
-                    <input type="text"
-                        required
-                        value={bank}
-                        onChange={(e) => setBank(e.target.value)} />
-
-                    <label>Type of Currency: </label>
-                    <input type="text"
-                        required
-                        value={currencyType}
-                        onChange={(e) => setCurrencyType(e.target.value)} />
-
-
-
-                    <button>Modify Cash Order</button>
+                    <button>Delete Cash Order</button>
                 </form>
 
             </div>
@@ -112,4 +90,4 @@ const ModifyCashOrder = () => {
     );
 }
 
-export default ModifyCashOrder;
+export default DeleteCashOrder;
