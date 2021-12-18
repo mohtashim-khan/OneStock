@@ -3,6 +3,7 @@
 import NavBar from '../components/Navbar';
 import React, { useEffect,useState } from 'react';
 import axiosInstance from '../axios';
+import '../css/Home.css'
 import Table from '@material-ui/core/Table'
 import { styled } from '@material-ui/core/styles';
 import TableBody from '@material-ui/core/TableBody';
@@ -12,6 +13,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+
+
+import Button from '@material-ui/core/Button'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
+import { green } from '@material-ui/core/colors';
 function OtherAssetHistory(){
     const [entrycryptos,setCrypto] = useState(null);
     const [entrycashs,setCash] = useState(null);
@@ -81,13 +87,15 @@ function OtherAssetHistory(){
     }, []);
     
     return(
-        <div>
+        <div3>
             
         
             <NavBar/>
-        
-                <h2>Other Asset Order History</h2>
-                <Table val = "6">
+            <div4 id="other">
+            
+            <div  id= "othertables">
+                
+                <table val = "6">
                     <caption>Crypto Currency</caption>
                     <tr>
                         <th scope="col">AssetID</th>
@@ -108,20 +116,7 @@ function OtherAssetHistory(){
                             </tr>
                         ))
                     }
-                </Table>
-                <TableContainer justify="center" style={{width:"50%"}} >
-                    <Table aria-label="customized table">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell>Dessert (100g serving)</TableCell>
-                        <TableCell align="right">Calories</TableCell>
-                        <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                        <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                        <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    </Table>
-                </TableContainer>
+                </table>
                 <table val = "7">
                     <caption>Commodities</caption>
                     <tr>
@@ -205,26 +200,60 @@ function OtherAssetHistory(){
                         ))
                     }
                 </table>
-                
-                <group>
-                    <button onClick={(e) => {window.location.href="/CreateCryptoOrder";}}>Add Crypto</button>
-                    <button onClick={(e) => {window.location.href="/CreateRealEstateOrder";}}>Add Real Estate</button>
-                    <button onClick={(e) => {window.location.href="/CreateCashOrder";}}>Add Cash</button>
-                    <button onClick={(e) => {window.location.href="/CreateBondOrder";}}>Add Bond</button>
-                    <button onClick={(e) => {window.location.href="/CreateCommoditiesOrder";}}>Add Commodities</button>
+            </div>
+                    <ButtonGroup 
+                        style={{
+                            fontSize:10,
+                            
+                        }}
+                        
+                        variant = "contained" 
+                        color = "secondary"
+                        >
+                  
+                    <Button href="/DeleteCryptoOrder">Delete Crypto</Button>
+                    <Button href="/DeleteRealEstateOrder">Delete Real Estate</Button>
+                    <Button href="/DeleteCashOrder">Delete Cash</Button>
+                    <Button href="/DeleteBondOrder">Delete Bond</Button>
+                    <Button href="/DeleteCommoditiesOrder">Delete Commodities</Button>
+                    </ButtonGroup>
+                    <ButtonGroup 
+                        style={{
+                            fontSize:10,
+                            
+                        }}
+                        
+                        variant = "contained" 
+                        color = "primary">
+                    <Button href="/ModifyCryptoOrder">Modify Crypto</Button>
+                    <Button href="/ModifyRealEstateOrder">Modify Real Estate</Button>
+                    <Button href="/ModifyCashOrder">Modify Cash</Button>
+                    <Button href="/ModifyBondOrder">Modify Bond</Button>
+                    <Button href="/ModifyCommoditiesOrder">Modify Commodities</Button>
+                    </ButtonGroup>
+                    <ButtonGroup 
+                        style={{
+                            fontSize:10,
+                            
+                        }}
+                        
+                        variant = "contained" 
+                        
+                        >
+                  
+                    <Button href="/CreateCryptoOrder">Add Crypto</Button>
+                    <Button href="/CreateRealEstateOrder">Add Real Estate</Button>
+                    <Button href="/CreateCashOrder">Add Cash</Button>
+                    <Button href="/CreateBondOrder">Add Bond</Button>
+                    <Button href="/CreateCommoditiesOrder">Add Commodities</Button>
+                    </ButtonGroup>
                     
-                </group>
-                <group2>
-                    <button onClick={(e) => {window.location.href="/ModifyCryptoOrder";}}>Modify Crypto</button>
-                    <button onClick={(e) => {window.location.href="/ModifyRealEstateOrder";}}>Modify Real Estate</button>
-                    <button onClick={(e) => {window.location.href="/ModifyCashOrder";}}>Modify Cash</button>
-                    <button onClick={(e) => {window.location.href="/ModifyBondOrder";}}>Modify Bond</button>
-                    <button onClick={(e) => {window.location.href="/ModifyCommoditiesOrder";}}>Modify Commodities</button>
-                </group2>
-               
+                   
+                    <h2>Other Asset Order History</h2>
+                </div4>
                 
             
-        </div>
+        </div3>
     );
 }
 

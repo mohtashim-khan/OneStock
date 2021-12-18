@@ -1,18 +1,37 @@
-import React, { Component } from 'react';
+import React, {useEffect, Component } from 'react';
 import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
 import axiosInstance from '../axios';
+import { useNavigate } from 'react-router-dom';
 const ModifyRealEstateOrder = () => {
 
-    const [orderID, setOrderID] = useState('');
-    const [valuation, setValuation] = useState('');
-    const [type, setType] = useState('');
-    const [location, setLocation] = useState('');
-    const [address, setAddress] = useState('');
+    const [orderID, setOrderID] = useState(null);
+    const [valuation, setValuation] = useState(null);
+    const [type, setType] = useState(null);
+    const [location, setLocation] = useState(null);
+    const [address, setAddress] = useState(null);
+    const navigate = useNavigate();
+    const [reales, setReales] = useState(null);
+    useEffect(() => {
+       
+        axiosInstance
+        .get('RealEstateGetPost/')
+            .then(response => {
+                setReales(response.data)
+            })
+            .catch((err) => {
+                console.log(err)
+                alert("permission denied");
+            }
+            
 
-
-
+            );
+        
+      
+    
+    // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    }, []);
 
 
 
@@ -27,7 +46,7 @@ const ModifyRealEstateOrder = () => {
         }
 
         axiosInstance
-        .patch('RealEstatePutPatchDelete/'+OrderInfo.orderID, {
+        .patch('RealEstatePutPatchDelete/'+OrderInfo.orderID+'/', {
             valuation: OrderInfo.valuation,
             type: OrderInfo.type,
             location: OrderInfo.location,
@@ -38,6 +57,7 @@ const ModifyRealEstateOrder = () => {
             alert("No existing asset, please create the asset first");
         }
         );
+        navigate('/OtherAssetHistory');
     }
 
     return (
@@ -48,11 +68,23 @@ const ModifyRealEstateOrder = () => {
                 <h2>Modify Real Estate Order</h2>
                 <form onSubmit={handleSubmit}>
                     <label>OrderID: </label>
-                    <input type="number"
+                    <select
                         required
                         value={orderID}
-                        onChange={(e) => setOrderID(e.target.value)} />
-                    <label>Valuation: </label>
+                        onChange={(e) => setOrderID(e.target.value)} >
+                        {reales&&
+                            reales.map((real) => (
+                                <option value={real.id}>{real.id}</option>    
+                        ))
+                        }
+                        {!reales ?(
+                            <option value="null">No existsing reales, Please Add Crypto First</option>  
+                            ):
+                            (<option value="null">Please Select an Crypto Id</option>
+                            )
+                        }
+                    </select> 
+                    <label>Modify Valuation: </label>
                     <input type="number"
                         required
                         value={valuation}

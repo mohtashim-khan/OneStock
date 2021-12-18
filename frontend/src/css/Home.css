@@ -3,7 +3,10 @@ h1{
     font-size: 50px;
     margin-bottom: 30px;
 }
-
+.buttonsContainer{
+    margin-left:auto;
+    margin-right:auto;
+}
 h2 {
     font-size: 30px;
     color: black;
@@ -154,7 +157,7 @@ table[val = "5"] {
     Left: 200px
 }
 table[val = "6"] {
-    position: absolute;
+    position: flex;
     border-collapse: collapse;
     border: 2px solid rgb(2, 1, 1);
     letter-spacing: 1px;
@@ -164,7 +167,7 @@ table[val = "6"] {
     Left: 700px
 }
 table[val = "7"] {
-    position: absolute;
+    position: flex;
     border-collapse: collapse;
     border: 2px solid rgb(2, 1, 1);
     letter-spacing: 1px;
@@ -174,7 +177,7 @@ table[val = "7"] {
     Left: 700px
 }
 table[val = "8"] {
-    position: absolute;
+    position: flex;
     border-collapse: collapse;
     border: 2px solid rgb(2, 1, 1);
     letter-spacing: 1px;
@@ -184,7 +187,7 @@ table[val = "8"] {
     Left: 700px
 }
 table[val = "9"] {
-    position: absolute;
+    position: flex;
     border-collapse: collapse;
     border: 2px solid rgb(2, 1, 1);
     letter-spacing: 1px;
@@ -194,7 +197,7 @@ table[val = "9"] {
     Left: 700px
 }
 table[val = "10"] {
-    position: absolute;
+    position: flex;
     border-collapse: collapse;
     border: 2px solid rgb(2, 1, 1);
     letter-spacing: 1px;
@@ -203,17 +206,25 @@ table[val = "10"] {
     top: 650px;
     Left: 700px
 }
-group{
-    position: absolute;
-    width: 170px;
-    height: 60px;
-    Left: 350px;
-    top: 270px;
+
+
+#othertables{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width:50%;
+    margin-right: auto;
+    margin-left: auto;
+    
 }
-group2{
-    position: absolute;
-    width: 170px;
-    height: 60px;
-    Left: 500px;
-    top: 270px;
+#otherbuttons{
+    display: flex;
+    flex-direction: column;
+    
+}
+#other{
+    display: flex;
+    flex-direction: column-reverse;
+    
+    align-items: center;
 }

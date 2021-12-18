@@ -3,6 +3,7 @@ import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
 import axiosInstance from '../axios';
+import { useNavigate } from 'react-router-dom';
 const CreateCommoditiesOrder = () => {
 
     const [valuation, setValuation] = useState('');
@@ -10,6 +11,7 @@ const CreateCommoditiesOrder = () => {
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
     let userinfo = null;
+    const navigate = useNavigate();
     function parseJwt(token) {
         if (!token) { return; }
         const base64Url = token.split('.')[1];
@@ -37,6 +39,7 @@ const CreateCommoditiesOrder = () => {
             alert("Error");
         }
         );
+        navigate('/OtherAssetHistory');
     }
 
     return (
