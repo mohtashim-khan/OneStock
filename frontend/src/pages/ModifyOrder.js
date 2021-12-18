@@ -3,6 +3,7 @@ import { useState } from "react"
 import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
 import axiosInstance from '../axios';
+import { useNavigate } from 'react-router-dom';
 const ModifyOrder = () => {
 
     const [orderID, setOrderID] = useState(null);
@@ -16,7 +17,7 @@ const ModifyOrder = () => {
 
     const [accounts, setAccounts] = useState(null);
     const [orders, setOrders] = useState(null);
-
+    const navigate = useNavigate();
     useEffect(() => {
        
         axiosInstance
@@ -92,6 +93,7 @@ const ModifyOrder = () => {
             alert("No existing Order, please add the Order first");
         }
         );
+        navigate('/StockOrderHistory');
     }
 
     return (

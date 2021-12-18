@@ -4,7 +4,6 @@ import NavBar from '../components/Navbar';
 import "../css/CreateOrder.css"
 import axiosInstance from '../axios';
 import { useNavigate } from 'react-router-dom';
-
 const CreateOrder = () => {
 
     const [ticker, setTicker] = useState('');
@@ -14,10 +13,10 @@ const CreateOrder = () => {
     const [account, setAccount] = useState(null);
     const [buyOrSell, setbuyOrSell] = useState('B');
     const [accounts, setAccounts] = useState(null);
+    
+
+
     const navigate = useNavigate();
-
-
-
     let userinfo = null;
 
     userinfo = parseJwt(localStorage.getItem('access_token'));
@@ -275,7 +274,7 @@ const CreateOrder = () => {
 
             }
             );
-
+            navigate('/StockOrderHistory');
     }
 
     return (
