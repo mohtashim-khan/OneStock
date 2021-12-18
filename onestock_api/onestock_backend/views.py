@@ -2,6 +2,7 @@ from django.db.models.query import QuerySet
 from django.views import generic
 from rest_framework import permissions
 from rest_framework.response import Response
+from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
 from .serializers import *
 from .models import *
@@ -255,3 +256,20 @@ class AccountPutPatchDelete(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         user = self.request.user
         return Account.objects.filter(user=user)
+
+class LargestGainsSpecificStockHistory(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = Specific_Stock_HistorySerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Specific_Stock_History.objects.filter(stockHistoryID__in=TotalStockHistory.objects.filter(user=user)).order_by('-netProfit')[:5]
+
+
+class SmallestGainsSpecificStockHistory(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = Specific_Stock_HistorySerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Specific_Stock_History.objects.filter(stockHistoryID__in=TotalStockHistory.objects.filter(user=user)).order_by('netProfit')[:5]

@@ -30,6 +30,9 @@ urlpatterns = [
     path('DividendPutPatchDelete/<int:pk>/', views.DividendPutPatchDelete.as_view(), name = "DividendPutPatchDelete"),
     path('AccountGetPost/', views.AccountGetPost.as_view(), name = "AccountGetPost"),
     path('AccountPutPatchDelete/<int:pk>/', views.AccountPutPatchDelete.as_view(), name = "AccountPutPatchDelete"),
+    path('LargestGainsSpecificStockHistory/', views.LargestGainsSpecificStockHistory.as_view(), name = "LargestGainsSpecificStockHistory"),
+    path('SmallestGainsSpecificStockHistory/', views.SmallestGainsSpecificStockHistory.as_view(), name = "SmallestGainsSpecificStockHistory"),
+
 
 
 
